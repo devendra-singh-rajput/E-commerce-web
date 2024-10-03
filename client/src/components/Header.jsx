@@ -4,13 +4,14 @@ import { IoSearchSharp } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import logo from '../assest/banner/aashapura-logo-transparent.png'
 const Header = () => {
   return (
 <header className='h-16 shadow-md bg-white'>
     <div className="h-full container mx-auto flex items-center px-4 justify-between">
     <div>
       <Link to={"/"}>
-      <Logo w ={100} h={60}/>
+        <img src={logo} width={150} height={70} alt="aashapura logo" />
       </Link>
     </div>
     <div className='hidden lg:flex items-center  w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'> 
