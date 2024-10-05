@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import signin from '../assest/signin.gif'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import imageToBase64 from '../helpers/imgToBase64';
+import { toast } from 'react-toastify';
+import summmryApi from '../common/index';
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false)
@@ -12,9 +14,10 @@ const SignUp = () => {
         userName: "",
         email: "",
         password: "",
-        confirmPassword: ""
-        , profilePic: ""
-    })
+        confirmPassword: "",
+        profilePic: ""
+    });
+     const navigate = useNavigate()
     const hendelOnChange = (e) => {
         const { name, value } = e.target
         setData((prev) => {
@@ -39,10 +42,40 @@ const SignUp = () => {
 
     }
 
-    const hendelSubmit = (e) => {
-        e.preventDefault()
-    }
-    // console.log("data login ",data)
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        if (data.password === data.confirmPassword) {
+            try {
+                const response = await fetch(summmryApi.signUp.url, {
+                    method: summmryApi.signUp.method,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+    
+                // if (!response.ok) {
+                //     throw new Error(`HTTP error! Status: ${response.status}`); // Handle HTTP errors
+                // }
+    
+                const dataApi = await response.json();
+            
+                if (dataApi.success) {
+                    toast.success(dataApi.message);
+                    navigate("/login")
+                } else {
+                    toast.error(dataApi.message);
+                }
+                
+            } catch (error) {
+                console.error("Error during signup:", error);
+                toast.error("An error occurred during signup.");
+            }
+        } else {
+            toast.error("Passwords do not match.");
+        }
+    };
     return (
         <section id="SignUp">
             <div className='mx-auto container p-4'>
@@ -60,7 +93,7 @@ const SignUp = () => {
                             </label>
                         </form>
                     </div>
-                    <form onSubmit={hendelSubmit} className='p-5 flex flex-col gap-2'>
+                    <form onSubmit={handleSubmit} className='p-5 flex flex-col gap-2'>
                         <div className='grid'>
                             <label> UserName :</label>
                             <div className='bg-slate-100 p-2'> <input type="text"

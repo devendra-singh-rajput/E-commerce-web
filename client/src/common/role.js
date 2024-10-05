@@ -1,0 +1,4 @@
+const ROLE={
+    ADIMIN:"ADMIN",
+    GENERAL:"GENERAL"
+}

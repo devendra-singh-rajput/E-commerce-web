@@ -38,7 +38,7 @@ const Login = () => {
                              name="email"
                              value={data.email}
                              onChange={hendelOnChange}required
-                              placeholder='enter  email' id="" className='w-full h-full outline-none bg-transparent rounded' />
+                              placeholder='enter  email' className='w-full h-full outline-none bg-transparent rounded' />
                             </div>
                         </div>
                         <div>
@@ -46,7 +46,7 @@ const Login = () => {
                             <div className='bg-slate-100 p-2 flex'> <input type={showPassword? "text":"password"} name="password"
                             value={data.password}
                             onChange={hendelOnChange}required
-                            placeholder='enter  password' id="" className='w-full h-full outline-none bg-transparent rounded' />
+                            placeholder='enter  password' className='w-full h-full outline-none bg-transparent rounded' />
                             <div className='cursor-pointer text-xl' onClick={()=>setShowPassword((prev)=>!prev)}> 
                                 
                                 {
