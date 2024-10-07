@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import signin from '../assest/signin.gif'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import summmryApi from '../common';
+import { toast } from 'react-toastify';
+import Context from '../context';
+
 
 const Login = () => {
     const [showPassword,setShowPassword]=useState(false)
@@ -10,20 +14,37 @@ const Login = () => {
         email:"",
         password:""
     })
+    const navigate = useNavigate()
+    const {fetchUserDetail}= useContext(Context)
     const hendelOnChange=(e)=>{
-        const {name,value}=e.target
-        setData((prev)=>{
-            return{
-                ...prev,
-                [name]:value
-
-            }
-        })
+        const {name,value}= e.target
+        
+       setData({
+        ...data,
+        [name]:value
+       })
     }
-    const hendelSubmit=(e)=>{
+    const hendelSubmit= async(e)=>{
              e.preventDefault()
+             const dataResponce= await fetch(summmryApi.signIn.url,{
+                method:summmryApi.signIn.method,
+                credentials:"include",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify(data)
+             }) 
+             
+             const dataApi = await dataResponce.json()
+             if (dataApi.success) {
+                    toast.success(dataApi.message);
+                    navigate("/")
+                    fetchUserDetail()
+                } else {
+                    toast.error(dataApi.message);
+                }
     }
-    // console.log("data login ",data)
+    
     return (
         <section id="login">
             <div className='mx-auto container p-4'>
