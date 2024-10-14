@@ -12,6 +12,10 @@ const summmryApi={
     current_user:{
         url:`${backendDomin}/api/user`,
         method:"get"
+    },
+    logout_user:{
+        url:`${backendDomin}/api/userLogout`,
+        method:"get"
     }
 }
  export default summmryApi

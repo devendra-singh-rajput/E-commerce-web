@@ -4,6 +4,7 @@ import Home from "../pages/Home"
 import Login from "../pages/Login"
 import ForgotPassword from "../pages/ForgotPassword"
 import SignUp from "../pages/SignUp"
+import AdminPenal from "../pages/AdminPenal"
 const router = createBrowserRouter([{
     path:"/",
     element: <App/>
@@ -23,6 +24,10 @@ const router = createBrowserRouter([{
         {
             path:"sign-up"
             ,element:<SignUp/>
+        },
+        {
+            path:"admin-panel"
+            ,element:<AdminPenal/>
         }
     ]
 }])
