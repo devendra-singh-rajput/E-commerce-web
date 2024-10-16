@@ -5,12 +5,11 @@ const initialState = {
 }
 
 export const userSlice = createSlice({
-  name: 'user   ',
+  name: 'user',
   initialState,
   reducers: {
     setUserDetaile:(state,action)=>{
         state.user =action.payload
-        console.log("userDetaile",action.payload)
     }
   },
 })

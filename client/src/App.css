@@ -1,0 +1,9 @@
+.user-table{
+    @apply bg-white border border-gray-300 w-full
+  }
+  .user-table th{
+    @apply border text-base font-medium
+  }
+  .user-table td{
+    @apply border text-base text-center
+  }

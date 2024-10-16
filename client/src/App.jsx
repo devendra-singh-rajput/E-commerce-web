@@ -8,7 +8,7 @@ import summmryApi from './common';
 import Context from './context';
 import { useDispatch } from 'react-redux';
 import { setUserDetaile } from './sotre/userSlice';
-// import './App.css'
+import './App.css'
 
 function App() {
     const dispatch=useDispatch()

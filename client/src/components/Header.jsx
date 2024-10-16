@@ -13,7 +13,7 @@ import { useState } from "react";
  const Header = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state?.user?.user)
-  const [menuDisplay,setMenuDisplay] =useState(true)
+  const [menuDisplay,setMenuDisplay] =useState(false)
   
   const userLogout = async () => {
     const fetchData = await fetch(summmryApi.logout_user.url, {
@@ -54,7 +54,7 @@ text-white'><IoSearchSharp /></div></div>
                   menuDisplay&&(
                     <div className='absolute bg-white bottom-0 top-11 h-fit pd-2 shadow-lg roundend '>
             <nav >
-            <Link to={'/admin-panel'}  className='whitespace-nowrap bg-white hover:bg-slate-100 p-2 rounded-lg'>Admin Panel</Link>
+            <Link to={'/admin-panel'}  className='whitespace-nowrap hidden md:block  bg-white hover:bg-slate-100 p-2 rounded-lg'onClick={()=>setMenuDisplay(prev=>!prev)}>Admin Panel</Link>
             </nav>
           </div>
                   )
