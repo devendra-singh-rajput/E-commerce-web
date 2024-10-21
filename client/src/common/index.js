@@ -20,6 +20,10 @@ const summmryApi={
     allUser:{
         url:`${backendDomin}/api/all-user`,
         method:"get"
+    },
+    updateUser:{
+        url:`${backendDomin}/api/updateUser`,
+        method:"post"
     }
 }
  export default summmryApi

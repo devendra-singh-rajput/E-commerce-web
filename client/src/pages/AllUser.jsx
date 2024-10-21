@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import summmryApi from '../common';
 import { toast } from 'react-toastify';
+import { LiaUserEditSolid } from "react-icons/lia";
+import ChangeRole from '../components/ChangeRole';
 
 const AllUser = () => {
     const [allUser, setAllUser] = useState([]);
+    const [openUpdateRole,setOpenUpdateRole]=useState(false)
+    const [updateUserDetails,setUpdateUserDetails]= useState({
+        email:"",
+        userName:"",
+        role:""
+        ,_id:""
+
+    });
 
     const fetchAllUser = async () => {
         try {
@@ -28,15 +38,16 @@ const AllUser = () => {
     }, []);
 
     return (
-        <div>
+        <div >   
             <table className="w-full user-table">
                 <thead>
                     <tr>
-                        <th>srNo</th>
-                        <th>name</th>
-                        <th>email</th>
-                        <th>role</th>
-                        <th>created at</th>
+                        <th>SrNo</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Created Date</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,10 +58,22 @@ const AllUser = () => {
                             <td>{el?.email}</td>
                             <td>{el?.role}</td>
                             <td>{new Date(el?.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td> {/* Format date if needed */}
+                            <td><button className='bg-green-100 cursor-pointer p-2 hover:bg-green-500 hover:text-white rounded-full'
+                            onClick={()=>{
+                                setUpdateUserDetails(el)
+                                setOpenUpdateRole(true)}}> <LiaUserEditSolid /></button></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {
+                openUpdateRole &&(<ChangeRole onClose={()=>setOpenUpdateRole(false)}
+                 userName={updateUserDetails.userName}
+                 email={updateUserDetails.email}
+                 role={updateUserDetails.role}
+                 userId={updateUserDetails._id}
+                />)
+            }
         </div>
     );
 };
