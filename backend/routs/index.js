@@ -14,5 +14,5 @@ router.get("/user",authToken,userDetailController)
 router.get("/userLogout",userLogout)
 
 router.get("/all-user",authToken,AllUser)
-router.post("/updateUser",authToken,updateUser)
+router.put("/updateUser",authToken,updateUser)
 module.exports=router

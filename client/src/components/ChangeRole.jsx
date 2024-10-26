@@ -5,12 +5,13 @@ import summmryApi from '../common';
 import { toast } from 'react-toastify';
 
 const ChangeRole = ({
-    userId, userName,email,role,onClose
+    userId, userName,email,role,onClose,callFunc
 }) => {
+    
     const [userRole,setUserRole]= useState(role)
     const hendelUserRole=(e)=>{
         setUserRole(e.target.value)
-        console.log(e.target.value)
+        
     }
     const updateUserRole =async()=>{
        const fetchResponce= await fetch(summmryApi.updateUser.url,{
@@ -29,11 +30,12 @@ const ChangeRole = ({
        if (dataResponce.success) {
         toast.success(dataResponce.message)
         onClose()
+        callFunc()
        }
-       console.log("responce data",dataResponce)
+       
     }
   return (
-    <div className='fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex justify-between items-center bg-slate-200 bg-opacity-50 '>
+    <div className='fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex justify-between items-center backdrop-blur-xs bg-black bg-opacity-40'>
      <div className='bg-white shadow-md p-4 w-full max-w-sm mx-auto rounded '>
         <button className='block ml-auto'onClick={onClose}>
         <IoClose />

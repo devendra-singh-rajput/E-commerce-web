@@ -14,7 +14,7 @@ async function AllUser(req,res){
             message: error.message ||error,
             error: true,
             success: false,
-          });
+          }); 
     }
 }
 module.exports=AllUser

@@ -23,7 +23,7 @@ const summmryApi={
     },
     updateUser:{
         url:`${backendDomin}/api/updateUser`,
-        method:"post"
+        method:"put"
     }
 }
  export default summmryApi

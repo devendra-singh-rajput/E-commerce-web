@@ -4,7 +4,7 @@ async function updateUser(req,res){
     try {
         const sessonUser=req.userId
 
-       const {userId,email,name,role}=res.body
+       const {userId,email,name,role}=req.body
        const payload={
              ...(email&&{email:email}),
              ...(name&&{name:name}),
@@ -12,7 +12,7 @@ async function updateUser(req,res){
        }
 
        const User= await userModel.findById(sessonUser)  
-       console.log("admin role",User.role)   
+        
 
 
 
