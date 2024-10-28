@@ -4,6 +4,7 @@ import productCategory from '../helpers/productCategory';
 import { FaCloudUploadAlt } from "react-icons/fa";
 import uploadImage from '../helpers/uploadImage';
 import DisplayImage from '../components/displayImage';
+import { MdDeleteForever } from "react-icons/md";
 
 const UploadProducts = ({ onClose }) => {
     const [fullScreenImage, setFullScreenImage] = useState("");
@@ -49,7 +50,17 @@ const UploadProducts = ({ onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add form submission logic here
+       console.log("submit form data",data)
+    };
+
+    const deleteProductImage = (index) => {
+        setData((prevData) => {
+            const newImages = prevData.productImage.filter((_, i) => i !== index);
+            return {
+                ...prevData,
+                productImage: newImages,
+            };
+        });
     };
 
     return (
@@ -84,7 +95,7 @@ const UploadProducts = ({ onClose }) => {
                             <div className='text-slate-500 flex justify-center items-center flex-col'>
                                 <span className='text-3xl'><FaCloudUploadAlt /></span>
                                 <p className='text-sm'>Upload Product Image</p>
-                                <input type="file" id="uploadProductImage" name="uploadProductImage" className='hidden' onChange={handleFileChange} />
+                                <input type="file" id="uploadProductImage" name="uploadProductImage" className='hidden' onChange={handleFileChange} required />
                             </div>
                         </div>
                     </label>
@@ -93,12 +104,15 @@ const UploadProducts = ({ onClose }) => {
                         {data.productImage.length > 0 ? (
                             <div className='flex justify-center gap-3'>
                                 {data.productImage.map((el, index) => (
-                                    <div className='mt-2' key={index}>
-                                        <img src={el} width={80} height={80} className='bg-slate-100 border rounded cursor-pointer' alt={el} 
+                                    <div className='relative group' key={index}>
+                                        <img src={el} width={80} height={80} className='bg-slate-100 border rounded cursor-pointer' alt={el}
                                             onClick={() => {
                                                 setOpenFullScreenImage(true);
                                                 setFullScreenImage(el);
                                             }} />
+                                        <div className='absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full hidden group-hover:block cursor-pointer' onClick={() => deleteProductImage(index)}>
+                                            <MdDeleteForever />
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -106,6 +120,19 @@ const UploadProducts = ({ onClose }) => {
                             <p className='text-primary text-xs'>*Please upload a product image</p>
                         )}
                     </div>
+
+                    <label htmlFor="price" className='mt-2'>Price:</label>
+                    <input type="number" id="price" placeholder='Enter price' name='price'
+                        value={data.price} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded' required />
+
+                    <label htmlFor="sellingPrice" className='mt-2'>Selling Price:</label>
+                    <input type="number" id="sellingPrice" placeholder='Enter selling price' name='sellingPrice'
+                        value={data.sellingPrice} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded' required />
+
+                    <label htmlFor="description" className='mt-2'>Description:</label>
+                    <textarea id="description" placeholder='Enter product description' name='description'
+                        value={data.description} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded h-28' rows="4" required />
+
                     <button type='submit' className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors py-1 px-3 rounded-full'>
                         {loading ? "Uploading..." : "Upload Product"}
                     </button>
