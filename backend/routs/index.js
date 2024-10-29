@@ -7,12 +7,19 @@ const userDetailController = require('../controllers/UserDetailController')
 const userLogout = require('../controllers/Logout')
 const AllUser = require('../controllers/AllUser')
 const updateUser = require('../controllers/updateUser')
+const uploadProduct = require('../controllers/UploadProducts')
+const getProducts = require('../controllers/getProducts')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
 router.get("/user",authToken,userDetailController)
 router.get("/userLogout",userLogout)
-
+//admin penal
 router.get("/all-user",authToken,AllUser)
 router.put("/updateUser",authToken,updateUser)
+
+router.post("/uploadProduct",authToken,uploadProduct)
+
+router.get("/getProducts",getProducts)
+
 module.exports=router

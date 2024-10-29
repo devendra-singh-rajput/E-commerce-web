@@ -5,6 +5,8 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import uploadImage from '../helpers/uploadImage';
 import DisplayImage from '../components/displayImage';
 import { MdDeleteForever } from "react-icons/md";
+import summmryApi from '../common';
+import { toast } from 'react-toastify';
 
 const UploadProducts = ({ onClose }) => {
     const [fullScreenImage, setFullScreenImage] = useState("");
@@ -28,7 +30,7 @@ const UploadProducts = ({ onClose }) => {
             [name]: value,
         }));
     };
-
+//upload image to cloudinary
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -48,10 +50,43 @@ const UploadProducts = ({ onClose }) => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-       console.log("submit form data",data)
+     
+        // Basic validation
+        if (!data.productName || !data.brandName || !data.category || !data.price || !data.sellingPrice || !data.description || data.productImage.length === 0) {
+            toast.error("Please fill in all required fields.");
+            return;
+        }
+        if (parseFloat(data.sellingPrice) >= parseFloat(data.price)) {
+            toast.error("Selling price must be less than the regular price.");
+            return;
+        }
+        setLoading(true); 
+        try {
+            const response = await fetch(summmryApi.uploadProduct.url, {
+                method: summmryApi.uploadProduct.method,
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            const dataResponse = await response.json();            
+            if (response.ok) {
+                toast.success(dataResponse.message);
+                onClose(); // Close the modal or clear the form
+            } else {
+                toast.error(dataResponse.message || "Failed to upload product.");
+            }
+        } catch (error) {
+            console.error("Error during product upload:", error);
+            toast.error("An error occurred while uploading the product.");
+        } finally {
+            setLoading(false); 
+        }
     };
+    
 
     const deleteProductImage = (index) => {
         setData((prevData) => {
