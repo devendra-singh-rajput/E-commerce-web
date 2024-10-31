@@ -33,6 +33,10 @@ const summmryApi={
         url:`${backendDomin}/api/getProducts`,
         method:"get"
     },
+    updateProducts:{
+        url:`${backendDomin}/api/updateProducts`,
+        method:"post"
+    },
 }
  export default summmryApi
  

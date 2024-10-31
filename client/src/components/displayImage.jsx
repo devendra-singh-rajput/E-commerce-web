@@ -22,7 +22,7 @@ const DisplayImage = ({ imgUrl, onClose }) => {
                     <IoClose />
                 </button>
                 <div className='flex justify-center p-4 max-w-[80vh] max-h-[80vh]'>
-                    <img src={imgUrl} alt="Product display" className='w-full h-full object-contain' />
+                    <img src={imgUrl} alt="Product display" className='w-full object-contain' />
                 </div>
             </div>
         </div>

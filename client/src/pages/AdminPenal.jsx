@@ -14,7 +14,7 @@ const AdminPenal = () => {
   }, [user])
   return (
     <div className='min-h-[calc(100vh-120px)] md:flex hidden '>
-      <aside className='bg-white min-h-full w-full max-w-60 shadow-right-custom'>
+      <aside className='bg-white min-h-full w-full max-w-60 shadow-right-custom mr-2'>
         <div className='h-36 bg-slate-200 flex-col flex justify-center items-center  shadow-md'>
           <div className='text-5xl cursor-pointer relative flex justify-center items-center h-32'>
             {

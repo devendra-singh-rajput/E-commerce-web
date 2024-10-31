@@ -8,17 +8,18 @@ import { MdDeleteForever } from "react-icons/md";
 import summmryApi from '../common';
 import { toast } from 'react-toastify';
 
-const UploadProducts = ({ onClose ,fetchData }) => {
+const EditProduct = ({ productData,onClose ,fetchData}) => {
     const [fullScreenImage, setFullScreenImage] = useState("");
     const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
     const [data, setData] = useState({
-        productName: "",
-        brandName: "",
-        category: "",
-        productImage: [],
-        description: "",
-        price: "",
-        sellingPrice: "",
+        ...productData,
+        productName: productData?.productName,
+        brandName: productData?.brandName,
+        category: productData?.category,
+        productImage: productData?.productImage||[],
+        description: productData?.description,
+        price: productData?.price,
+        sellingPrice: productData?.sellingPrice,
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -64,8 +65,8 @@ const UploadProducts = ({ onClose ,fetchData }) => {
         }
         setLoading(true); 
         try {
-            const response = await fetch(summmryApi.uploadProduct.url, {
-                method: summmryApi.uploadProduct.method,
+            const response = await fetch(summmryApi.updateProducts.url, {
+                method: summmryApi.updateProducts.method,
                 credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
@@ -76,7 +77,7 @@ const UploadProducts = ({ onClose ,fetchData }) => {
             if (response.ok) {
                 toast.success(dataResponse.message);
                 onClose(); // Close the modal or clear the form
-                fetchData()
+                fetchData();//re render data 
             } else {
                 toast.error(dataResponse.message || "Failed to upload product.");
             }
@@ -103,7 +104,7 @@ const UploadProducts = ({ onClose ,fetchData }) => {
         <div className='fixed w-full h-full backdrop-blur-xs bg-black bg-opacity-40 top-0 bottom-0 left-0 right-0 flex justify-center items-center'>
             <div className='bg-white p-4 rounded w-full max-w-2xl h-full max-h-[80%] overflow-hidden'>
                 <div className='flex justify-between items-center pb-3'>
-                    <h2 className='font-bold text-lg'>Upload Product</h2>
+                    <h2 className='font-bold text-lg'>Edit Product</h2>
                     <button className='block ml-auto hover:text-primary font-bold text-2xl' onClick={onClose}>
                         <IoClose />
                     </button>
@@ -131,7 +132,7 @@ const UploadProducts = ({ onClose ,fetchData }) => {
                             <div className='text-slate-500 flex justify-center items-center flex-col'>
                                 <span className='text-3xl'><FaCloudUploadAlt /></span>
                                 <p className='text-sm'>Upload Product Image</p>
-                                <input type="file" id="uploadProductImage" name="uploadProductImage" className='hidden' onChange={handleFileChange} required />
+                                <input type="file" id="uploadProductImage" name="uploadProductImage" className='hidden' onChange={handleFileChange}/>
                             </div>
                         </div>
                     </label>
@@ -170,7 +171,7 @@ const UploadProducts = ({ onClose ,fetchData }) => {
                         value={data.description} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded h-28' rows="4" required />
 
                     <button type='submit' className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors py-1 px-3 rounded-full'>
-                        {loading ? "Uploading..." : "Upload Product"}
+                        {loading ? "Uploading..." : "Update Product"}
                     </button>
                 </form>
             </div>
@@ -180,4 +181,4 @@ const UploadProducts = ({ onClose ,fetchData }) => {
     );
 }
 
-export default UploadProducts;
+export default EditProduct;
