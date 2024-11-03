@@ -43,7 +43,7 @@ const AllProducts = () => {
       {loading && <p className="text-center">Loading products...</p>}
       {error && <p className='text-red-500 text-center'>{error}</p>}
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-3 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-3 h-[calc]">
       {/* //flex wrap */}
         {allProducts.map((product) => (
           <AdminProductCard data={product} key={product._id} fetchData={fetchAllProducts}/>  
