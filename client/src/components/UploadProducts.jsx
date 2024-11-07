@@ -85,7 +85,7 @@ const UploadProducts = ({ onClose, fetchData }) => {
             });
             const dataResponse = await response.json();
             if (response.ok) {
-                toast.success(dataResponse.message);
+                toast.success(dataResponse.message, {autoClose: 900});
                 onClose();
                 fetchData();
             } else {

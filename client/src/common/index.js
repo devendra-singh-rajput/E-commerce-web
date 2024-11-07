@@ -38,6 +38,10 @@ const summmryApi={
         url:`${backendDomin}/api/updateProducts`,
         method:"put"
     },
+    deleteProduct:{
+        url:`${backendDomin}/api/deleteProduct`,
+        method:"delete"
+    },
 }
  export default summmryApi
  

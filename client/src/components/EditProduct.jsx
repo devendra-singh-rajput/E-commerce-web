@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { IoClose } from "react-icons/io5";
 import productCategory from '../helpers/productCategory';
 import { FaCloudUploadAlt } from "react-icons/fa";
-import uploadImage from '../helpers/uploadImage';
 import DisplayImage from '../components/displayImage';
 import { MdDeleteForever } from "react-icons/md";
 import summmryApi from '../common';
 import { toast } from 'react-toastify';
+import uploadImages from '../helpers/uploadImage';
 
 const EditProduct = ({ productData, onClose, fetchData }) => {
     const [fullScreenImage, setFullScreenImage] = useState("");
@@ -27,15 +27,18 @@ const EditProduct = ({ productData, onClose, fetchData }) => {
     };
 
     const handleFileChange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
+        const files = Array.from(e.target.files); // Convert FileList to an array of files
+        if (files.length > 0) {
             setLoading(true);
             setError("");
             try {
-                const uploadCloudinary = await uploadImage(file);
+                // Upload multiple images using uploadImages function
+                const uploadResponses = await uploadImages(files);
+                // Extract URLs from each successful upload response
+                const imageUrls = uploadResponses.map(response => response.url);
                 setData((prevData) => ({
                     ...prevData,
-                    productImage: [...prevData.productImage, uploadCloudinary.url]
+                    productImage: [...prevData.productImage,...imageUrls]
                 }));
                 // Clear the input after upload
                 e.target.value = null;
