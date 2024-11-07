@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { IoClose } from "react-icons/io5";
 import productCategory from '../helpers/productCategory';
 import { FaCloudUploadAlt } from "react-icons/fa";
-import uploadImage from '../helpers/uploadImage';
 import DisplayImage from '../components/displayImage';
 import { MdDeleteForever } from "react-icons/md";
 import summmryApi from '../common';
 import { toast } from 'react-toastify';
+import uploadImages from '../helpers/uploadImage';
 
-const UploadProducts = ({ onClose ,fetchData }) => {
+const UploadProducts = ({ onClose, fetchData }) => {
     const [fullScreenImage, setFullScreenImage] = useState("");
     const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
     const [data, setData] = useState({
@@ -30,39 +30,50 @@ const UploadProducts = ({ onClose ,fetchData }) => {
             [name]: value,
         }));
     };
-//upload image to cloudinary
+    //upload image to cloudinary
     const handleFileChange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
+        const files = Array.from(e.target.files); // Convert FileList to an array of files
+        if (files.length > 0) {
             setLoading(true);
             setError("");
             try {
-                const uploadCloudinary = await uploadImage(file);
+                // Upload multiple images using uploadImages function
+                const uploadResponses = await uploadImages(files);
+                // Extract URLs from each successful upload response
+                const imageUrls = uploadResponses.map(response => response.url);
+        
+                // Update state with new image URLs
                 setData((prevData) => ({
                     ...prevData,
-                    productImage: [...prevData.productImage, uploadCloudinary.url]
+                    productImage: [...prevData.productImage, ...imageUrls]
                 }));
+        
+                toast.success("Images uploaded successfully!");
             } catch (err) {
                 setError("Image upload failed.");
+                toast.error("Image upload failed.");
             } finally {
                 setLoading(false);
             }
         }
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-     
-        // Basic validation
+
+        // Custom validation for image upload and other fields
         if (!data.productName || !data.brandName || !data.category || !data.price || !data.sellingPrice || !data.description || data.productImage.length === 0) {
-            toast.error("Please fill in all required fields.");
+            toast.error("Please fill in all required fields, including at least one image.");
             return;
         }
         if (parseFloat(data.sellingPrice) >= parseFloat(data.price)) {
             toast.error("Selling price must be less than the regular price.");
             return;
         }
-        setLoading(true); 
+
+        // Proceed with uploading the product
+        setLoading(true);
         try {
             const response = await fetch(summmryApi.uploadProduct.url, {
                 method: summmryApi.uploadProduct.method,
@@ -72,11 +83,11 @@ const UploadProducts = ({ onClose ,fetchData }) => {
                 },
                 body: JSON.stringify(data)
             });
-            const dataResponse = await response.json();            
+            const dataResponse = await response.json();
             if (response.ok) {
                 toast.success(dataResponse.message);
-                onClose(); // Close the modal or clear the form
-                fetchData()
+                onClose();
+                fetchData();
             } else {
                 toast.error(dataResponse.message || "Failed to upload product.");
             }
@@ -84,10 +95,11 @@ const UploadProducts = ({ onClose ,fetchData }) => {
             console.error("Error during product upload:", error);
             toast.error("An error occurred while uploading the product.");
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
-    
+
+
 
     const deleteProductImage = (index) => {
         setData((prevData) => {
@@ -131,7 +143,7 @@ const UploadProducts = ({ onClose ,fetchData }) => {
                             <div className='text-slate-500 flex justify-center items-center flex-col'>
                                 <span className='text-3xl'><FaCloudUploadAlt /></span>
                                 <p className='text-sm'>Upload Product Image</p>
-                                <input type="file" id="uploadProductImage" name="uploadProductImage" className='hidden' onChange={handleFileChange} required />
+                                <input type="file" id="uploadProductImage" name="uploadProductImage" multiple accept="image/*" className='hidden' onChange={handleFileChange}/>
                             </div>
                         </div>
                     </label>
@@ -141,7 +153,7 @@ const UploadProducts = ({ onClose ,fetchData }) => {
                             <div className='flex justify-center gap-3'>
                                 {data.productImage.map((el, index) => (
                                     <div className='relative group' key={index}>
-                                        <img src={el} width={80} height={80} className='bg-slate-100 border rounded cursor-pointer' alt={el}
+                                        <img src={el}  className='bg-slate-100 border rounded cursor-pointer w-24 h-24 object-contain' alt={el}
                                             onClick={() => {
                                                 setOpenFullScreenImage(true);
                                                 setFullScreenImage(el);
@@ -159,7 +171,9 @@ const UploadProducts = ({ onClose ,fetchData }) => {
 
                     <label htmlFor="price" className='mt-2'>Price:</label>
                     <input type="number" id="price" placeholder='Enter price' name='price'
-                        value={data.price} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded' required />
+                        value={data.price} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded'
+                         required 
+                         />
 
                     <label htmlFor="sellingPrice" className='mt-2'>Selling Price:</label>
                     <input type="number" id="sellingPrice" placeholder='Enter selling price' name='sellingPrice'
@@ -169,9 +183,14 @@ const UploadProducts = ({ onClose ,fetchData }) => {
                     <textarea id="description" placeholder='Enter product description' name='description'
                         value={data.description} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded h-28' rows="4" required />
 
-                    <button type='submit' className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors py-1 px-3 rounded-full'>
+                    <button
+                        type='submit'
+                        className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors py-1 px-3 rounded-full'
+                        disabled={loading}
+                    >
                         {loading ? "Uploading..." : "Upload Product"}
                     </button>
+
                 </form>
             </div>
             {/* Display image in full screen */}

@@ -1,4 +1,5 @@
 const backendDomin ="http://localhost:8080"
+// const backendDomin ="https://e-commerce-web-aq5g.onrender.com"
 
 const summmryApi={
     signUp:{
@@ -35,7 +36,7 @@ const summmryApi={
     },
     updateProducts:{
         url:`${backendDomin}/api/updateProducts`,
-        method:"post"
+        method:"put"
     },
 }
  export default summmryApi

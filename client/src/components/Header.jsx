@@ -24,7 +24,7 @@ const Header = () => {
     const data = await fetchData.json();
 
     if (data.success) {
-      toast.success(data.message);
+      toast.success(data.message,{autoClose: 1000});
       dispatch(setUserDetaile(null))
       // navigate("/login")
     } else {

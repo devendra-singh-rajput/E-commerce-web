@@ -8,18 +8,12 @@ import { MdDeleteForever } from "react-icons/md";
 import summmryApi from '../common';
 import { toast } from 'react-toastify';
 
-const EditProduct = ({ productData,onClose ,fetchData}) => {
+const EditProduct = ({ productData, onClose, fetchData }) => {
     const [fullScreenImage, setFullScreenImage] = useState("");
     const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
     const [data, setData] = useState({
         ...productData,
-        productName: productData?.productName,
-        brandName: productData?.brandName,
-        category: productData?.category,
-        productImage: productData?.productImage||[],
-        description: productData?.description,
-        price: productData?.price,
-        sellingPrice: productData?.sellingPrice,
+        productImage: productData?.productImage || [],
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -31,7 +25,7 @@ const EditProduct = ({ productData,onClose ,fetchData}) => {
             [name]: value,
         }));
     };
-//upload image to cloudinary
+
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -43,6 +37,8 @@ const EditProduct = ({ productData,onClose ,fetchData}) => {
                     ...prevData,
                     productImage: [...prevData.productImage, uploadCloudinary.url]
                 }));
+                // Clear the input after upload
+                e.target.value = null;
             } catch (err) {
                 setError("Image upload failed.");
             } finally {
@@ -52,52 +48,59 @@ const EditProduct = ({ productData,onClose ,fetchData}) => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-     
-        // Basic validation
-        if (!data.productName || !data.brandName || !data.category || !data.price || !data.sellingPrice || !data.description || data.productImage.length === 0) {
-            toast.error("Please fill in all required fields.");
-            return;
-        }
-        if (parseFloat(data.sellingPrice) >= parseFloat(data.price)) {
-            toast.error("Selling price must be less than the regular price.");
-            return;
-        }
-        setLoading(true); 
-        try {
-            const response = await fetch(summmryApi.updateProducts.url, {
-                method: summmryApi.updateProducts.method,
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-            const dataResponse = await response.json();            
-            if (response.ok) {
-                toast.success(dataResponse.message);
-                onClose(); // Close the modal or clear the form
-                fetchData();//re render data 
-            } else {
-                toast.error(dataResponse.message || "Failed to upload product.");
-            }
-        } catch (error) {
-            console.error("Error during product upload:", error);
-            toast.error("An error occurred while uploading the product.");
-        } finally {
-            setLoading(false); 
-        }
-    };
-    
+    e.preventDefault();
 
+    // Basic validation
+    if (!data.productName || !data.brandName || !data.category || !data.price || !data.sellingPrice || !data.description || data.productImage.length === 0) {
+        toast.error("Please fill in all required fields and upload at least one image.");
+        return;
+    }
+    if (parseFloat(data.sellingPrice) >= parseFloat(data.price)) {
+        toast.error("Selling price must be less than the regular price.");
+        return;
+    }
+    
+    // Ensure the _id is included in the data to be sent
+    const productDataToSend = {
+        ...data,
+        _id: productData._id // assuming productData contains the original product details
+    };
+    console.log(productDataToSend)
+    setLoading(true);
+    try {
+        const response = await fetch(summmryApi.updateProducts.url, {
+            method: summmryApi.updateProducts.method,
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(productDataToSend) // Send the updated product data
+          });
+        const dataResponse = await response.json();
+        if (response.ok) {
+            toast.success(dataResponse.message);
+            onClose(); // Close the modal or clear the form
+            fetchData(); // re-render data
+        } else {
+            toast.error(dataResponse.message || "Failed to upload product.");
+        }
+    } catch (error) {
+        console.error("Error during product upload:", error);
+        toast.error("An error occurred while uploading the product.");
+    } finally {
+        setLoading(false);
+    }
+};
     const deleteProductImage = (index) => {
-        setData((prevData) => {
-            const newImages = prevData.productImage.filter((_, i) => i !== index);
-            return {
-                ...prevData,
-                productImage: newImages,
-            };
-        });
+        if (window.confirm("Are you sure you want to delete this image?")) {
+            setData((prevData) => {
+                const newImages = prevData.productImage.filter((_, i) => i !== index);
+                return {
+                    ...prevData,
+                    productImage: newImages,
+                };
+            });
+        }
     };
 
     return (
@@ -121,8 +124,8 @@ const EditProduct = ({ productData,onClose ,fetchData}) => {
                     <label htmlFor="category" className='mt-2'>Category:</label>
                     <select name="category" value={data.category} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded' required>
                         <option value="">Select a category</option>
-                        {productCategory.map((el, index) => (
-                            <option value={el.value} key={el.value + index}>{el.label}</option>
+                        {productCategory.map((el) => (
+                            <option value={el.value} key={el.value}>{el.label}</option>
                         ))}
                     </select>
 
@@ -132,7 +135,7 @@ const EditProduct = ({ productData,onClose ,fetchData}) => {
                             <div className='text-slate-500 flex justify-center items-center flex-col'>
                                 <span className='text-3xl'><FaCloudUploadAlt /></span>
                                 <p className='text-sm'>Upload Product Image</p>
-                                <input type="file" id="uploadProductImage" name="uploadProductImage" className='hidden' onChange={handleFileChange}/>
+                                <input type="file" id="uploadProductImage" name="uploadProductImage" className='hidden' onChange={handleFileChange} />
                             </div>
                         </div>
                     </label>
@@ -142,12 +145,16 @@ const EditProduct = ({ productData,onClose ,fetchData}) => {
                             <div className='flex justify-center gap-3'>
                                 {data.productImage.map((el, index) => (
                                     <div className='relative group' key={index}>
-                                        <img src={el} width={80} height={80} className='bg-slate-100 border rounded cursor-pointer' alt={el}
+                                        <img src={el} className='bg-slate-100 border rounded cursor-pointer w-24 h-24 object-contain' alt={el}
                                             onClick={() => {
                                                 setOpenFullScreenImage(true);
                                                 setFullScreenImage(el);
                                             }} />
-                                        <div className='absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full hidden group-hover:block cursor-pointer' onClick={() => deleteProductImage(index)}>
+                                        <div
+                                            className='absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full hidden group-hover:block cursor-pointer'
+                                            onClick={() => deleteProductImage(index)}
+                                            title="Delete Image"
+                                        >
                                             <MdDeleteForever />
                                         </div>
                                     </div>
@@ -170,12 +177,15 @@ const EditProduct = ({ productData,onClose ,fetchData}) => {
                     <textarea id="description" placeholder='Enter product description' name='description'
                         value={data.description} onChange={handleOnChange} className='p-2 bg-slate-100 border rounded h-28' rows="4" required />
 
-                    <button type='submit' className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors py-1 px-3 rounded-full'>
-                        {loading ? "Uploading..." : "Update Product"}
+                    <button
+                        type='submit'
+                        className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors py-1 px-3 rounded-full'
+                        disabled={loading}
+                    >
+                        {loading ? "Updating..." : "Update Product"}
                     </button>
                 </form>
             </div>
-            {/* Display image in full screen */}
             {openFullScreenImage && <DisplayImage onClose={() => setOpenFullScreenImage(false)} imgUrl={fullScreenImage} />}
         </div>
     );

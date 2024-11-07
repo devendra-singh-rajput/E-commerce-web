@@ -10,9 +10,9 @@ const AllUser = require('../controllers/user/AllUser')
 const updateUser = require('../controllers/user/updateUser')
 
 
-const uploadProduct = require('../controllers/products/UploadProducts')
 const getProducts = require('../controllers/products/getProducts')
-const updateProduct = require('../controllers/products/UploadProducts')
+const updateProduct = require('../controllers/products/EditProduct')
+const uploadProduct = require('../controllers/products/uploadProduct')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
@@ -24,6 +24,6 @@ router.put("/updateUser",authToken,updateUser)
 //products
 router.post("/uploadProduct",authToken,uploadProduct)
 router.get("/getProducts",getProducts)
-router.post("/updateProducts",authToken,updateProduct)
+router.put("/updateProducts",updateProduct)
 
 module.exports=router
