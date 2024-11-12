@@ -44,7 +44,7 @@ const Header = () => {
           <input type="text" placeholder='search item hear...' className='w-full outline-none ' />
           <div className='text-lg min-w-[50px] h-8 bg-primary flex items-center justify-center rounded-r-full
 text-white'><IoSearchSharp /></div></div>
-        <div className='flex items-center gap-7'>
+        <div className='flex items-center gap-4 md:gap-7'>
           <div className='relative group flex justify-center'>
             {
               user?._id&&(

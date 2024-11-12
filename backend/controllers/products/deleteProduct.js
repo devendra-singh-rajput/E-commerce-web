@@ -11,7 +11,6 @@ const deleteProduct = async (req, res) => {
                 message: "Product ID is required.",
             });
         }
-       console.log(id)
         // Attempt to delete the product by ID
         const deletedProduct = await productModel.deleteOne({ _id: id });
 

@@ -42,6 +42,14 @@ const summmryApi={
         url:`${backendDomin}/api/deleteProduct`,
         method:"delete"
     },
+    productCategory:{
+        url:`${backendDomin}/api/productCategory`,
+        method:"get"
+    },
+    productCategoryWise:{
+        url:`${backendDomin}/api/productCategoryWise`,
+        method:"post"
+    },
 }
  export default summmryApi
  

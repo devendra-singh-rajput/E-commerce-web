@@ -63,7 +63,7 @@ const AdminProductCard = ({ data, fetchData }) => {
             </div>
 
             <div
-              className='p-2 text-ellipsis hover:text-white bg-red-300 hover:bg-primary rounded-full cursor-pointer'
+              className='p-2 text-ellipsis opacity-70 hover:opacity-100 hover:text-white bg-red-500 hover:bg-primary rounded-full cursor-pointer'
               onClick={() => deleteProduct(data?._id)}>
                 
               <MdDeleteForever />

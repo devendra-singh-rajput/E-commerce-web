@@ -68,7 +68,6 @@ const EditProduct = ({ productData, onClose, fetchData }) => {
         ...data,
         _id: productData._id // assuming productData contains the original product details
     };
-    console.log(productDataToSend)
     setLoading(true);
     try {
         const response = await fetch(summmryApi.updateProducts.url, {
