@@ -33,6 +33,11 @@ const router = createBrowserRouter([{
             ,element:<ProductCategory/>
         },
         {
+            path:"productDetails/:categoryName"
+            ,element:<productDetails/>
+            
+        },
+        {
             path:"admin-panel"
             ,element:<AdminPenal/>
             ,children:[

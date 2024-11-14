@@ -26,11 +26,13 @@ const HorizontalProductCard = ({ category, heading }) => {
     fetchData();
   }, [category]);
 
-  if (loading==false) {
-    if (data.length === 0) return<p>No products available.</p>
-   if (error) return <p>Error: {error}</p>; 
-
-  }
+  setTimeout(() => {
+    if (loading === false) {
+      if (data.length === 0) return <p>No Internet Connection available...</p>;
+      if (error) return <p>Error: {error}</p>;
+    }
+  }, 20000); // 20000 ms = 20 seconds
+  
   return (
     <div className="container mx-auto px-3 my-2 w-full max-w-[1600px]">
       <h2 className="text-2xl font-semibold px-3 py-4 capitalize">{heading}</h2>
@@ -53,7 +55,7 @@ const HorizontalProductCard = ({ category, heading }) => {
               <p className=' rounded  m-1 text-slate-900 capitalize p-2 bg-slate-200 animate-pulse w-full'></p>
               </div>
               <p className=" rounded  m-1 text-md line-through text-gray-500 p-2 bg-slate-200 animate-pulse w-full"></p>
-              <p className=" rounded  m-1 text-xl font-semibold text-primary pb-2 p-2 bg-slate-200 animate-pulse w-full"></p>
+              <p className=" rounded  m-1 text-xl font-semibold  pb-2 p-2 bg-slate-200 animate-pulse w-full"></p>
             <button className='border-2  transition-colors rounded-full px-2 text-sm p-2 bg-slate-200 animate-pulse w-full'></button>
             </div>
           </div>
@@ -75,7 +77,7 @@ const HorizontalProductCard = ({ category, heading }) => {
               <p className=' text-slate-900 capitalize'>{product.category}</p>
               </div>
               <p className="text-md line-through text-gray-500">{INRcurrency(product.sellingPrice)}</p>
-              <p className="text-xl font-semibold text-primary pb-2">{INRcurrency(product.price)}</p>
+              <p className="text-xl font-semibold  pb-2">{INRcurrency(product.price)}</p>
             <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm'>Add to card</button>
             </div>
           </div>
