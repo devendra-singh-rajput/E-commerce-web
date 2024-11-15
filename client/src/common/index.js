@@ -50,6 +50,10 @@ const summmryApi={
         url:`${backendDomin}/api/productCategoryWise`,
         method:"post"
     },
+    productDetailes:{
+        url:`${backendDomin}/api/productDetailes`,
+        method:"post"
+    },
 }
  export default summmryApi
  

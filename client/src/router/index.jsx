@@ -8,6 +8,7 @@ import AdminPenal from "../pages/AdminPenal"
 import AllUser from "../pages/AllUser"
 import AllProducts from"../pages/AllProducts"
 import ProductCategory from "../pages/ProductCategory"
+import ProductDetail from '../pages/ProductDetail';
 const router = createBrowserRouter([{
     path:"/",
     element: <App/>
@@ -33,8 +34,8 @@ const router = createBrowserRouter([{
             ,element:<ProductCategory/>
         },
         {
-            path:"productDetails/:categoryName"
-            ,element:<productDetails/>
+            path:"productDetail/:id"
+            ,element:<ProductDetail/>
             
         },
         {

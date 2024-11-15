@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import fetchCategoryWiseProduct from '../helpers/categoryWiseProduct';
 import INRcurrency from '../helpers/displayCurrency';
+import { Link } from 'react-router-dom';
 
 const HorizontalProductCard = ({ category, heading }) => {
   const [data, setData] = useState([]); // Initialize as an empty array
@@ -62,7 +63,7 @@ const HorizontalProductCard = ({ category, heading }) => {
         ))
       ) : (
         data.map((product, index) => (
-          <div
+          <Link to={"productDetail/"+product?._id}
             key={index}
             className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-40 bg-white rounded-sm shadow flex"
           >
@@ -78,9 +79,9 @@ const HorizontalProductCard = ({ category, heading }) => {
               </div>
               <p className="text-md line-through text-gray-500">{INRcurrency(product.sellingPrice)}</p>
               <p className="text-xl font-semibold  pb-2">{INRcurrency(product.price)}</p>
-            <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm'>Add to card</button>
+            <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm'onClick={(e)=>addToCart(e,product?._id)}>Add to cart</button>
             </div>
-          </div>
+          </Link>
         ))
       )}
         </div>

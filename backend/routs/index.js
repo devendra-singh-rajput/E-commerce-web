@@ -16,6 +16,7 @@ const uploadProduct = require('../controllers/products/uploadProduct')
 const deleteProduct = require('../controllers/products/deleteProduct')
 const productCategory = require('../controllers/products/productCategory')
 const productCategoryWise = require('../controllers/products/categoryWiseAllproduct')
+const getProductDetailes = require('../controllers/products/getProductDetailes')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
@@ -31,4 +32,5 @@ router.put("/updateProducts",authToken,updateProduct)
 router.delete("/deleteProduct/:id",authToken,deleteProduct)
 router.get("/productCategory",productCategory)
 router.post("/productCategoryWise",productCategoryWise)
+router.post('/productDetailes',getProductDetailes)
 module.exports=router

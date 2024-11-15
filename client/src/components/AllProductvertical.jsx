@@ -4,7 +4,7 @@ import INRcurrency from '../helpers/displayCurrency';
 import { Link } from 'react-router-dom';
 import addToCart from '../helpers/addToCart';
 
-const verticalProductCard = ({ category, heading }) => {
+const AllProductvertical = ({ category, heading }) => {
   const [data, setData] = useState([]); // Initialize as an empty array
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null); // Add an error state
@@ -40,7 +40,7 @@ const verticalProductCard = ({ category, heading }) => {
     <div className="container mx-auto px-3 my-4 w-full max-w-[1600px] bg-white">
       <h2 className="text-2xl font-semibold px-3 py-4 capitalize">{heading}</h2>
 
-      <div className='flex items-center gap-4 md:gap-6 overflow-x-scroll scrollbar-none'>
+      <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,320px))] justify-between md:gap-6 overflow-x-scroll scrollbar-none'>
         {loading ? (
           loadingList.map((product, index) => (
             <div
@@ -122,4 +122,4 @@ const verticalProductCard = ({ category, heading }) => {
   );
 };
 
-export default verticalProductCard;
+export default AllProductvertical;
