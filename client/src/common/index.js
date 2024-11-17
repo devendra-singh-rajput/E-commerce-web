@@ -54,6 +54,26 @@ const summmryApi={
         url:`${backendDomin}/api/productDetailes`,
         method:"post"
     },
+    addToCart:{
+        url:`${backendDomin}/api/addToCart`,
+        method:"post"
+    },
+    countProductCart:{
+        url:`${backendDomin}/api/countProductCart`,
+        method:"get"
+    },
+    cartView:{
+        url:`${backendDomin}/api/cartView`,
+        method:"get"
+    },
+    updateCart:{
+        url:`${backendDomin}/api/updateCart`,
+        method:"post"
+    },
+    deleteCartProduct:{
+        url:`${backendDomin}/api/deleteCartProduct`,
+        method:"delete"
+    },
 }
  export default summmryApi
  

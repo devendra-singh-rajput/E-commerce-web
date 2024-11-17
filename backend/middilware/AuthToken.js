@@ -5,7 +5,7 @@ async function authToken(req, res, next) {
     const token = req.cookies?.token;
     if (!token) {
       return res.status(401).json({
-        message: "User is not logged in",
+        message: "please login first...",
         error: true,
         success: false,
       });
@@ -14,7 +14,7 @@ async function authToken(req, res, next) {
     jwt.verify(token, process.env.TOKEN_SECRET_KEY, (err, decoded) => {
       if (err) {
         return res.status(403).json({
-          message: "Authentication failed",
+          message: "User is not logged in",
           error: true,
           success: false,
         });

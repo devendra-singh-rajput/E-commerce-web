@@ -9,12 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import summmryApi from "../common";
 import { setUserDetaile } from "../sotre/userSlice";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ROLE from "../common/role";
+import Context from "../context";
 const Header = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state?.user?.user)
   const [menuDisplay, setMenuDisplay] = useState(false)
+  const context = useContext(Context)
 
   const userLogout = async () => {
     const fetchData = await fetch(summmryApi.logout_user.url, {
@@ -24,14 +26,18 @@ const Header = () => {
     const data = await fetchData.json();
 
     if (data.success) {
-      toast.success(data.message,{autoClose: 1000});
+      toast.success(data.message, { autoClose: 1000 });
       dispatch(setUserDetaile(null))
       // navigate("/login")
     } else {
       toast.error(data.message);
     }
+  }
+
+  const onSerchProducts= async(e)=>{
 
   }
+
   return (
     <header className='h-16 shadow-md bg-white fixed w-full z-40'>
       <div className="h-full container mx-auto flex items-center px-4 justify-between">
@@ -41,21 +47,21 @@ const Header = () => {
           </Link>
         </div>
         <div className='hidden lg:flex items-center  w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'>
-          <input type="text" placeholder='search item hear...' className='w-full outline-none ' />
+          <input type="text" placeholder='search item hear...' className='w-full outline-none ' onChange={onSerchProducts} />
           <div className='text-lg min-w-[50px] h-8 bg-primary flex items-center justify-center rounded-r-full
-text-white'><IoSearchSharp /></div></div>
+          text-white'><IoSearchSharp /></div></div>
         <div className='flex items-center gap-4 md:gap-7'>
           <div className='relative group flex justify-center'>
             {
-              user?._id&&(
+              user?._id && (
                 <div className='text-3xl cursor-pointer relative flex justify-center' onClick={() => setMenuDisplay(prev => !prev)}>
-                {
-                  user?.profilePic ? (<img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user?.name} />) : (<FaRegUserCircle />)
-                }
-              </div>
+                  {
+                    user?.profilePic ? (<img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user?.name} />) : (<FaRegUserCircle />)
+                  }
+                </div>
               )
             }
-           
+
             {
               menuDisplay && (
                 <div className='absolute bg-white bottom-0 top-11 h-fit pd-2 shadow-lg rounded '>
@@ -68,11 +74,15 @@ text-white'><IoSearchSharp /></div></div>
               )
             }
           </div>
-          <div className='text-3xl relative'><span><MdOutlineShoppingCart /></span>
-            <div className='bg-primary text-white p-1 flex items-center justify-center w-5 h-5 rounded-full -top-2 -right-3 absolute'>
-              <p className='text-sm'>0</p>
-            </div>
-          </div>
+
+          {
+             user?._id&&(<Link to={'/cart'} className='text-3xl relative'><span><MdOutlineShoppingCart /></span>
+              <div className='bg-primary text-white p-1 flex items-center justify-center w-5 h-5 rounded-full -top-2 -right-3 absolute'>
+                <p className='text-sm'>{context?.countProductCart}</p>
+              </div>
+            </Link> )
+          }
+          
 
           <div>
             {

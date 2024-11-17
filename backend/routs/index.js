@@ -17,6 +17,11 @@ const deleteProduct = require('../controllers/products/deleteProduct')
 const productCategory = require('../controllers/products/productCategory')
 const productCategoryWise = require('../controllers/products/categoryWiseAllproduct')
 const getProductDetailes = require('../controllers/products/getProductDetailes')
+const AddToCart = require('../controllers/user/AddToCart')
+const countProductCart = require('../controllers/user/CountProductsCart')
+const cartView = require('../controllers/user/CartView')
+const updateCart = require('../controllers/user/updateCart')
+const deleteCartProduct = require('../controllers/user/deleteCartProduct')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
@@ -33,4 +38,12 @@ router.delete("/deleteProduct/:id",authToken,deleteProduct)
 router.get("/productCategory",productCategory)
 router.post("/productCategoryWise",productCategoryWise)
 router.post('/productDetailes',getProductDetailes)
+// prodcut add to cart 
+router.post('/addToCart',authToken,AddToCart)
+router.get('/countProductCart',authToken,countProductCart)
+router.get('/cartView',authToken,cartView)
+router.post('/updateCart',authToken,updateCart)
+router.delete('/deleteCartProduct',authToken,deleteCartProduct)
+
+
 module.exports=router

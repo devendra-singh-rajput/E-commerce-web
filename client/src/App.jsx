@@ -12,6 +12,7 @@ import './App.css'
 
 function App() {
     const dispatch=useDispatch()
+    const [countProductCart,setCountProductCart]=useState(0)
   const fetchUserDetail=async()=>{
     const dataResponce=await fetch(summmryApi.current_user.url,{
      method: summmryApi.current_user.method,
@@ -27,13 +28,32 @@ function App() {
     }
     return dataApi
   }
+//  user cart 
+  const userAddToCart= async()=>{
+    const dataResponce=await fetch(summmryApi.countProductCart.url,{
+      method: summmryApi.countProductCart.method,
+       headers: {
+                 "Content-Type": "application/json",
+             },
+      credentials:'include'
+     })
+     const dataApi= await dataResponce.json()
+     setCountProductCart(dataApi.data)
+     return dataApi
+
+  }
+
+
   useEffect(()=>{
     fetchUserDetail()
+    userAddToCart()
   },[])
   return (
     <>
      <Context.Provider value={{
-       fetchUserDetail 
+       fetchUserDetail , //userDetailes
+       countProductCart ,//  cart counts
+       userAddToCart
     }}>
 
     <ToastContainer />
