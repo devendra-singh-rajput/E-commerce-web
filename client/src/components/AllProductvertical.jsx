@@ -4,6 +4,7 @@ import INRcurrency from '../helpers/displayCurrency';
 import { Link } from 'react-router-dom';
 import addToCart from '../helpers/addToCart';
 import Context from '../context';
+import scrollTop from '../helpers/scrollTop';
 
 const AllProductvertical = ({ category, heading }) => {
   const [data, setData] = useState([]); // Initialize as an empty array
@@ -12,7 +13,11 @@ const AllProductvertical = ({ category, heading }) => {
   const loadingList = new Array(13).fill(null)
   const { userAddToCart } = useContext(Context);
 
-
+  const handleAddToCart = (e, _id) => {
+    e.stopPropagation();
+    addToCart(e, _id);
+    userAddToCart();
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -27,10 +32,7 @@ const AllProductvertical = ({ category, heading }) => {
       setData(Array.isArray(categoryProduct.data) ? categoryProduct.data : []); // Ensure data is an array
     }
   };
-const hendelAddTocart=async(e,_id)=>{
-  await addToCart(e,product?._id)
-  await userAddToCart()
-}
+
   useEffect(() => {
     fetchData();
   }, [category]);
@@ -78,9 +80,9 @@ const hendelAddTocart=async(e,_id)=>{
           ))
         ) : (
           data.map((product, index) => (
-            <Link to={"productDetail/"+product?._id}
+            <Link to={"/productDetail/"+product?._id}
               key={index}
-              className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px]  bg-white rounded-sm shadow"
+              className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px]  bg-white rounded-sm shadow" onClick={scrollTop}
             >
 
              {/* scroll images to card */}
@@ -110,7 +112,7 @@ const hendelAddTocart=async(e,_id)=>{
                   </div>
                   <p className="text-md line-through text-gray-500">{INRcurrency(product.sellingPrice)}</p>
                   <p className="text-xl font-semibold  pb-2">{INRcurrency(product.price)}</p>
-                  <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm'onClick={(e)=>{addToCart(e,product?._id),userAddToCart()}}>Add to cart</button>
+                  <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm'onClick={(e)=>handleAddToCart(e,product?._id)}>Add to cart</button>
 
                 </div>
                 <div className="border-l  border-gray-300 h-36 hidden md:block"></div>

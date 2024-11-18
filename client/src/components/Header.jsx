@@ -3,7 +3,7 @@
 import { IoSearchSharp } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assest/banner/aashapura-logo-transparent.png'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify';
@@ -17,6 +17,9 @@ const Header = () => {
   const user = useSelector(state => state?.user?.user)
   const [menuDisplay, setMenuDisplay] = useState(false)
   const context = useContext(Context)
+  const navigate =useNavigate()
+  const searchInput=useLocation()
+  const [search,setSearch]=useState(searchInput?.search?.split("=")[1])
 
   const userLogout = async () => {
     const fetchData = await fetch(summmryApi.logout_user.url, {
@@ -35,7 +38,11 @@ const Header = () => {
   }
 
   const onSerchProducts= async(e)=>{
-
+  const{value}=e.target
+  setSearch(value)
+  if (value) {
+    navigate(`/search?q=${value}`)
+  }
   }
 
   return (
@@ -47,7 +54,7 @@ const Header = () => {
           </Link>
         </div>
         <div className='hidden lg:flex items-center  w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'>
-          <input type="text" placeholder='search item hear...' className='w-full outline-none ' onChange={onSerchProducts} />
+          <input type="text" placeholder='search item hear...' className='w-full outline-none ' onChange={onSerchProducts} value={search}/>
           <div className='text-lg min-w-[50px] h-8 bg-primary flex items-center justify-center rounded-r-full
           text-white'><IoSearchSharp /></div></div>
         <div className='flex items-center gap-4 md:gap-7'>
