@@ -13,7 +13,6 @@ const Cart = () => {
   const loadingCart = new Array(context.countProductCart).fill(null);
 
   const fetchData = async () => {
-    setLoading(true);
     setError(null);
 
     try {
@@ -36,7 +35,6 @@ const Cart = () => {
       setError("Error fetching data");
     }
 
-    setLoading(false);
   };
 
   const updateQuantity = async (_id, newQty) => {
@@ -85,9 +83,14 @@ const Cart = () => {
       console.error("Error updating quantity:", error);
     }
   }
+      const hendelLoading=async()=>{
+    setLoading(true);
+     await fetchData();
+    setLoading(false);
 
+      }
   useEffect(() => {
-    fetchData();
+    hendelLoading()
   }, []);
 
   const totalAmount = data.reduce((sum, product) => {

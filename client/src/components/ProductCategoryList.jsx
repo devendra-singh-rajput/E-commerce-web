@@ -46,7 +46,7 @@ const ProductCategoryList = () => {
         <div className="text-red-500">{error}</div>
       ) : (
           productCategory.map((product, index) => (
-            <Link to={"/product-category/" + product?.category} key={product?.id || index} className="product-item">
+            <Link to={"/product-category?category=" + product?.category} key={product?.id || index} className="product-item">
               <div className="w-16 h-16 md:h-20 md:w-20 rounded-full overflow-hidden p-4 bg-slate-200 flex items-center justify-center">
                 <img
                   src={product?.productImage?.[0]}

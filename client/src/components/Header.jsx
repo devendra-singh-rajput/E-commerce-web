@@ -31,7 +31,7 @@ const Header = () => {
     if (data.success) {
       toast.success(data.message, { autoClose: 1000 });
       dispatch(setUserDetaile(null))
-      // navigate("/login")
+      navigate("/")
     } else {
       toast.error(data.message);
     }

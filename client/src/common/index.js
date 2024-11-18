@@ -78,6 +78,10 @@ const summmryApi={
         url:`${backendDomin}/api/search`,
         method:"get"
     },
+    getFilterProducts:{
+        url:`${backendDomin}/api/getFilterProducts`,
+        method:"get"
+    },
 }
  export default summmryApi
  
