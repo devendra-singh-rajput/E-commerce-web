@@ -82,7 +82,7 @@ const verticalProductCard = ({ category, heading }) => {
           data.map((product, index) => (
             <Link to={"productDetail/"+product?._id}
               key={index}
-              className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px]  bg-white rounded-sm shadow"
+              className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px]  bg-white rounded-sm shadow-xl"
             >
 
              {/* scroll images to card */}
@@ -90,7 +90,7 @@ const verticalProductCard = ({ category, heading }) => {
                 {product.productImage.map((src, index) => (
                   <div
                     key={index}
-                    className="w-full p-4 mix-blend-multiply h-48 snap-center flex items-center flex-shrink-0   justify-center transition-transform duration-300 ease-in-out transform hover:scale-110 "
+                    className="w-full p-4 mix-blend-multiply h-44 snap-center flex items-center flex-shrink-0 justify-center transition-transform duration-300 ease-in-out transform hover:scale-110 "
                   >
                     <img
                       src={src}
@@ -104,14 +104,14 @@ const verticalProductCard = ({ category, heading }) => {
 
               <div className="p-4 flex gap-2">
                 <div className='gap-3'>
-                  <h2 className="text-base md:text-lg text-ellipsis line-clamp-1 font-semibold">{product.productName}</h2>
+                  <h2 className="text-base md:text-lg min-w-32 text-ellipsis line-clamp-1 font-semibold">{product.productName}</h2>
 
                   <div className='flex gap-4 '>
                     <p className='capitalize font-semibold'>{product.brandName}</p>
                     <p className=' text-slate-900 capitalize'>{product.category}</p>
                   </div>
-                  <p className="text-md line-through text-gray-500">{INRcurrency(product.sellingPrice)}</p>
-                  <p className="text-xl font-semibold  pb-2">{INRcurrency(product.price)}</p>
+                  <p className="text-md line-through text-gray-500">{INRcurrency(product.price)}</p>
+                  <p className="text-xl font-semibold  pb-2">{INRcurrency(product.sellingPrice)}</p>
                   <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm'onClick={(e)=>handleAddToCart(e,product?._id)}>Add to cart</button>
 
                 </div>

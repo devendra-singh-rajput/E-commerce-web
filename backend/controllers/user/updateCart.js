@@ -2,26 +2,38 @@ const productCartModel = require("../../models/productCart");
 
 async function updateCart(req, res) {
   try {
-    const currentUser = req.UserId;
-    const cartProduct = req.body._id;
-    const qty = req.body.quantity; // Ensure this matches the frontend key
+    const userId = req.userId;
+    const { productId, quantity } = req.body;
 
-    // Check if `qty` is provided
-    if (typeof qty !== 'number') {
+    // Validation
+    if (!productId) {
       return res.status(400).json({
-        message: "Quantity is required and should be a number.",
+        message: "Product ID is required.",
+        error: true,
+        success: false,
+      });
+    }
+    if (typeof quantity !== 'number' || quantity < 1) {
+      return res.status(400).json({
+        message: "Quantity should be a positive number.",
         error: true,
         success: false,
       });
     }
 
-    // Perform the update
-    const updateProduct = await productCartModel.updateOne(
-      { userId: currentUser, _id: cartProduct }, // Filter by user and product ID
-      { $set: { quantity: qty } } // Update the quantity field
-    );
+    // Fetch the user's cart
+    const cart = await productCartModel.findOne({ userId });
+    if (!cart) {
+      return res.status(404).json({
+        message: "Cart not found for this user.",
+        error: true,
+        success: false,
+      });
+    }
 
-    if (updateProduct.matchedCount === 0) {
+    // Locate the product in the cart
+    const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
+    if (itemIndex === -1) {
       return res.status(404).json({
         message: "Product not found in cart.",
         error: true,
@@ -29,15 +41,19 @@ async function updateCart(req, res) {
       });
     }
 
+    // Update quantity and save the cart
+    cart.items[itemIndex].quantity = quantity;
+    const updatedCart = await cart.save();
+
     res.status(200).json({
-      data: updateProduct,
+      data: updatedCart,
       error: false,
       success: true,
-      message: "Quantity Updated",
+      message: "Quantity updated successfully.",
     });
   } catch (error) {
-    return res.status(400).json({
-      message: error.message || error,
+    res.status(500).json({
+      message: error.message || "An error occurred while updating the cart.",
       error: true,
       success: false,
     });

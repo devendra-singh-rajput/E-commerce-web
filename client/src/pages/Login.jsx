@@ -43,7 +43,7 @@ const Login = () => {
                 toast.success(dataApi.message,{autoClose: 1000});
                 navigate("/");
                 fetchUserDetail();
-                // userAddToCart()
+                userAddToCart()
             } else {
                 toast.error(dataApi.message);
             }
@@ -56,8 +56,8 @@ const Login = () => {
 
     return (
         <section id="login">
-            <div className='mx-auto container p-4'>
-                <div className="bg-white p-2 py-5 w-full max-w-sm mx-auto">
+            <div className='mx-auto container mb-28 p-4'>
+                <div className="bg-white p-2 py-5 w-full max-w-sm mx-auto mt-15">
                     <div className='w-20 h-20 mx-auto overflow-hidden rounded-full'>
                         <img src={signin} alt="signin icon" />
                     </div>

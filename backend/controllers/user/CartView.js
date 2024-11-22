@@ -1,24 +1,33 @@
 const productCartModel = require("../../models/productCart");
-// const { populate } = require("../../models/ProductModel");
 
-async function cartView(req,res){
+async function cartView(req, res) {
     try {
-       const currentUser= req.UserId
+        const userId = req.userId;
 
-       const Allproducts =await productCartModel.find({UserId:currentUser}).populate('productId')
+        // Find the cart for the current user and populate product details
+        const cart = await productCartModel.findOne({ userId }).populate('items.productId');
 
+        if (!cart) {
+            return res.status(404).json({
+                data: null,
+                error: false,
+                success: false,
+                message: "No cart found for this user"
+            });
+        }
         res.status(200).json({
-            data:Allproducts,
-            error:false,
-            success:true,
-            message:"OK"
-        })
+            data: cart,
+            error: false,
+            success: true,
+            message: "Cart retrieved successfully"
+        });
     } catch (error) {
-        return res.status(400).json({
-            message: error.message ||error,
+        return res.status(500).json({
+            message: error.message || "An error occurred while retrieving the cart",
             error: true,
             success: false,
-          }); 
+        });
     }
 }
-module.exports=cartView
+
+module.exports = cartView;

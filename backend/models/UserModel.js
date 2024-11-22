@@ -4,7 +4,14 @@ const userSchema = new mongoose.Schema({
   userName: {
     type: String,
      require: true,
-  },     
+  },  
+  // cart:{
+  //   productId:{
+  //     ref:'products',
+  //     type:String
+  //   },
+  //   Quantity:Number
+  // },
     email :{
       type:String,
       unique:true

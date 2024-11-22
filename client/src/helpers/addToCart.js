@@ -11,7 +11,7 @@ const addToCart = async(e,id)=>{
      headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({productId:id}) 
+      body: JSON.stringify({productId:id,quantity: 1}) 
     })
 
     const responseData   = await response.json()

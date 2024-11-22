@@ -57,20 +57,20 @@ const SearchVerticalCard = ({ loading, data = [] }) => {
                     key={idx}
                     className="w-full p-4 mix-blend-multiply h-48 snap-center flex items-center flex-shrink-0 justify-center transition-transform duration-300 ease-in-out transform hover:scale-110"
                   >
-                    <img src={src} alt={product.name} className="w-full h-full object-contain" loading="lazy" />
+                    <img src={src} alt={product.name} className="w-full  h-full object-contain" loading="lazy" />
                   </div>
                 ))}
               </div>
 
               <div className="p-4 flex gap-2">
                 <div className="gap-3">
-                  <h2 className="text-base md:text-lg text-ellipsis line-clamp-1 font-semibold">{product.productName}</h2>
+                  <h2 className="text-base min-w-32 md:text-lg text-ellipsis line-clamp-1 font-semibold">{product.productName}</h2>
                   <div className="flex gap-4">
                     <p className="capitalize font-semibold">{product.brandName}</p>
-                    <p className="text-slate-900 capitalize">{product.category}</p>
+                    <p className="text-slate-900 capitalize text-ellipsis line-clamp-1">{product.category}</p>
                   </div>
-                  <p className="text-md line-through text-gray-500">{INRcurrency(product.sellingPrice)}</p>
-                  <p className="text-xl font-semibold pb-2">{INRcurrency(product.price)}</p>
+                  <p className="text-md line-through text-gray-500">{INRcurrency(product.price)}</p>
+                  <p className="text-xl font-semibold pb-2">{INRcurrency(product.sellingPrice)}</p>
                   <button
                     className="border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm"
                     onClick={(e) => handleAddToCart(e, product?._id)}
@@ -80,7 +80,7 @@ const SearchVerticalCard = ({ loading, data = [] }) => {
                 </div>
                 <div className="border-l border-gray-300 h-36 hidden md:block" />
                 <div>
-                  <p className="text-ellipsis line-clamp-6 h-36 hidden md:block overflow-y-scroll scrollbar-none">
+                  <p className="text-ellipsis line-clamp-6 h-36 hidden md:block overflow-y-scroll scrollbar-none overflow-x-hidden">
                     {product.description}
                   </p>
                 </div>

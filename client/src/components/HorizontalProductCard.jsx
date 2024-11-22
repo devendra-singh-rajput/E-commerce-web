@@ -87,8 +87,8 @@ const HorizontalProductCard = ({ category, heading }) => {
               <p className='capitalize font-semibold'>{product.brandName}</p>
               <p className=' text-slate-900 capitalize'>{product.category}</p>
               </div>
-              <p className="text-md line-through text-gray-500">{INRcurrency(product.sellingPrice)}</p>
-              <p className="text-xl font-semibold  pb-2">{INRcurrency(product.price)}</p>
+              <p className="text-md line-through text-gray-500">{INRcurrency(product.price)}</p>
+              <p className="text-xl font-semibold  pb-2">{INRcurrency(product.sellingPrice)}</p>
             <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm'onClick={(e)=>handleAddToCart(e,product?._id)}>Add to cart</button>
             </div>
           </Link>

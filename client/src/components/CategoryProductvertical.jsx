@@ -6,7 +6,7 @@ import addToCart from '../helpers/addToCart';
 import Context from '../context';
 import scrollTop from '../helpers/scrollTop';
 
-const AllProductvertical = ({ category, heading }) => {
+const CategoryProductvertical = ({ category, heading }) => {
   const [data, setData] = useState([]); // Initialize as an empty array
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null); // Add an error state
@@ -90,7 +90,7 @@ const AllProductvertical = ({ category, heading }) => {
                 {product.productImage.map((src, index) => (
                   <div
                     key={index}
-                    className="w-full p-4 mix-blend-multiply h-48 snap-center flex items-center flex-shrink-0   justify-center transition-transform duration-300 ease-in-out transform hover:scale-110 "
+                    className="w-full p-4 mix-blend-multiply h-44 snap-center flex items-center flex-shrink-0   justify-center transition-transform duration-300 ease-in-out transform hover:scale-110 "
                   >
                     <img
                       src={src}
@@ -107,11 +107,11 @@ const AllProductvertical = ({ category, heading }) => {
                   <h2 className="text-base md:text-lg text-ellipsis line-clamp-1 font-semibold">{product.productName}</h2>
 
                   <div className='flex gap-4 '>
-                    <p className='capitalize font-semibold'>{product.brandName}</p>
+                    <p className='capitalize font-semibold min-w-20'>{product.brandName}</p>
                     <p className=' text-slate-900 capitalize'>{product.category}</p>
                   </div>
-                  <p className="text-md line-through text-gray-500">{INRcurrency(product.sellingPrice)}</p>
-                  <p className="text-xl font-semibold  pb-2">{INRcurrency(product.price)}</p>
+                  <p className="text-md line-through text-gray-500">{INRcurrency(product.price)}</p>
+                  <p className="text-xl font-semibold  pb-2">{INRcurrency(product.sellingPrice)}</p>
                   <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-full px-2 text-sm'onClick={(e)=>handleAddToCart(e,product?._id)}>Add to cart</button>
 
                 </div>
@@ -130,4 +130,4 @@ const AllProductvertical = ({ category, heading }) => {
   );
 };
 
-export default AllProductvertical;
+export default CategoryProductvertical;

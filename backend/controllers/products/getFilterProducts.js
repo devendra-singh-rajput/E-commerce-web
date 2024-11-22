@@ -5,7 +5,6 @@ const productModel = require("../../models/ProductModel");
 const getFilteredProducts = async (req, res) => {
   try {
       const { category, brand, sortBy, minPrice, maxPrice } = req.query;
-      console.log( category, brand, sortBy, minPrice, maxPrice)
     // Construct the filter query
     let filter = {};
 
@@ -16,14 +15,15 @@ const getFilteredProducts = async (req, res) => {
 
     // Brand filter (case-insensitive)
     if (brand) {
-      filter.brand = new RegExp(brand, 'i');
+      filter.brandName = new RegExp(brand, 'i');
     }
+    
 
     // Price range filter
     if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = parseFloat(minPrice);
-      if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
+      filter.sellingPrice = {};
+      if (minPrice) filter.sellingPrice.$gte = parseFloat(minPrice);
+      if (maxPrice) filter.sellingPrice.$lte = parseFloat(maxPrice);
     }
 
     // Sorting

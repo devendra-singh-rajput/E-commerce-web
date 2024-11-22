@@ -8,7 +8,9 @@ const searchProducts = async (req, res) => {
             "$or":[
                 {productName: regex},
                 {brandName: regex},
-               { category:regex},
+               {category:regex},
+               {description :regex},
+            //    {price:regex}
             ]
         })
         res.status(200).json({

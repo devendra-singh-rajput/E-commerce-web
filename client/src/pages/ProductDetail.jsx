@@ -6,7 +6,7 @@ import { IoIosStar } from "react-icons/io";
 import INRcurrency from '../helpers/displayCurrency';
 import { FaCartArrowDown } from "react-icons/fa";
 import { BsBagHeartFill } from "react-icons/bs";
-import AllProductvertical from '../components/AllProductvertical';
+import CategoryProductvertical from '../components/categoryProductvertical';
 import Context from '../context';
 import addToCart from '../helpers/addToCart';
 const ProductDetail = () => {
@@ -82,7 +82,7 @@ const leaveZoomImage=()=>{
       <div className='min-h-[200px] flex flex-col lg:flex-row gap-4'>
 
         {/* Product Image */}
-        <div className='h-96 flex flex-col lg:flex-row-reverse gap-4'>
+        <div className='h-96 flex flex-col lg:flex-row-reverse gap-4 items-center'>
           <div className='h-[300px] w-[300px] lg:h-96 lg:w-96 bg-slate-200 relative'>
             <img
               src={activeImage}
@@ -181,8 +181,8 @@ const leaveZoomImage=()=>{
                 <IoIosStarHalf />
               </div>
               <div className='flex items-center font-medium text-2xl lg:text-3xl my-1 gap-4  '>
-                <p className=''>{INRcurrency(data.price)}</p>
-                <p className='text-slate-500 line-through text-lg'>{INRcurrency(data.sellingPrice)}</p>
+                <p className=''>{INRcurrency(data.sellingPrice)}</p>
+                <p className='text-slate-500 line-through text-lg'>{INRcurrency(data.price)}</p>
               </div>
               <div className='flex items-start gap-5 my-2'>
                 <button className='border-2 border-primary py-1 justify-center flex items-center gap-1 text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium min-w-[120px]'><BsBagHeartFill className='text-lg' />BUY</button>
@@ -200,8 +200,8 @@ const leaveZoomImage=()=>{
       </div>
 
 
-      <AllProductvertical category={data?.category}heading={"recommended product's"}/>
-
+      <CategoryProductvertical category={data?.category}heading={"recommended product's"}/>
+       
     </div>
   );
 };
