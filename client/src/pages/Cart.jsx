@@ -58,10 +58,16 @@ const Cart = () => {
   };
 
   // Increase product quantity
-  const increaseQuantity = (productId, qty) => updateQuantity(productId, qty + 1);
+  const increaseQuantity = (e,productId, qty) =>{
+    e?.stopPropagation(); 
+    e?.preventDefault();
+    updateQuantity(productId, qty + 1);
+  }
 
   // Decrease product quantity
-  const decreaseQuantity = (productId, qty) => {
+  const decreaseQuantity = (e,productId, qty) => {
+    e?.stopPropagation(); 
+    e?.preventDefault();
     if (qty > 1) {
       updateQuantity(productId, qty - 1);
     }
@@ -164,7 +170,7 @@ const handelLoading = async () => {
                     <div className='flex items-center gap-3 mt-2'>
                       <button
                         className='rounded pb-1 border hover:bg-primary hover:text-white border-primary text-primary h-6 w-6 flex justify-center items-center font-bold text-xl'
-                        onClick={() => decreaseQuantity(product.productId._id, product.quantity)}
+                        onClick={(e) => decreaseQuantity(e,product.productId._id, product.quantity)}
                         disabled={product.quantity <= 1}
                         aria-label="Decrease quantity"
                       >
@@ -173,7 +179,7 @@ const handelLoading = async () => {
                       <span>{product.quantity}</span>
                       <button
                         className='rounded pb-1 border hover:bg-primary hover:text-white border-primary text-primary h-6 w-6 flex justify-center items-center font-bold text-xl'
-                        onClick={() => increaseQuantity(product.productId._id, product.quantity)}
+                        onClick={(e) => increaseQuantity(e,product.productId._id, product.quantity)}
                         aria-label="Increase quantity"
                       >
                         +

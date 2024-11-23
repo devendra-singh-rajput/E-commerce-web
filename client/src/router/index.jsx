@@ -11,6 +11,7 @@ import ProductCategory from "../pages/ProductCategory"
 import ProductDetail from '../pages/ProductDetail';
 import Cart from "../pages/Cart"
 import SearchProducts from "../pages/SearchProducts"
+import CheckoutPage from "../pages/orderCheckOut"
 const router = createBrowserRouter([{
     path:"/",
     element: <App/>
@@ -48,6 +49,10 @@ const router = createBrowserRouter([{
         {
             path:"search"
             ,element:<SearchProducts/>
+        },
+        {
+            path:"CheckoutPage/:productId"
+            ,element:<CheckoutPage/>
         },
         {
             path:"admin-panel"

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import summmryApi from '../common';
 import { IoIosStarHalf } from "react-icons/io";
 import { IoIosStar } from "react-icons/io";
@@ -186,7 +186,7 @@ const leaveZoomImage=()=>{
                 <p className='text-slate-500 line-through text-lg'>{INRcurrency(data.price)}</p>
               </div>
               <div className='flex items-start gap-5 my-2'>
-                <button className='border-2 border-primary py-1 justify-center flex items-center gap-1 text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium min-w-[120px]'><BsBagHeartFill className='text-lg' />BUY</button>
+                <Link to={`/CheckoutPage/${data?._id}`} className='border-2 border-primary py-1 justify-center flex items-center gap-1 text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium min-w-[120px]'><BsBagHeartFill className='text-lg' />BUY</Link>
                 <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium flex items-center gap-1  py-1 min-w-[130px]'onClick={(e)=>handleAddToCart(e,data?._id)} > <FaCartArrowDown className='text-lg'
                   />ADD TO CART</button>
               </div>
