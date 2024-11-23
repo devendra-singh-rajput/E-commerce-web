@@ -9,6 +9,7 @@ import { BsBagHeartFill } from "react-icons/bs";
 import CategoryProductvertical from '../components/categoryProductvertical';
 import Context from '../context';
 import addToCart from '../helpers/addToCart';
+import ShowAllProducts from '../components/ShowAllProducts';
 const ProductDetail = () => {
   // Initialize state variables
   const [data, setData] = useState({
@@ -79,7 +80,7 @@ const leaveZoomImage=()=>{
 }
   return (
     <div className='container mx-auto p-4 '>
-      <div className='min-h-[200px] flex flex-col lg:flex-row gap-4'>
+      <div className='min-h-[200px] flex flex-col md:flex-row gap-4'>
 
         {/* Product Image */}
         <div className='h-96 flex flex-col lg:flex-row-reverse gap-4 items-center'>
@@ -201,6 +202,7 @@ const leaveZoomImage=()=>{
 
 
       <CategoryProductvertical category={data?.category}heading={"recommended product's"}/>
+      <ShowAllProducts/>
        
     </div>
   );

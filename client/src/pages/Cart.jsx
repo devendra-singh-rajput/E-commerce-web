@@ -124,7 +124,8 @@ const handelLoading = async () => {
           ) : (
             <div>
               {data.map((product) => (
-                <div
+                <Link
+                to={"/productDetail/"+product.productId?._id}
                   key={product._id}
                   className='w-full bg-white my-3 border rounded border-slate-300 h-32 grid grid-cols-[128px,1fr]'
                 >
@@ -179,7 +180,7 @@ const handelLoading = async () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
