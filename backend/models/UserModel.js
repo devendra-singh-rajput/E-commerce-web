@@ -5,13 +5,6 @@ const userSchema = new mongoose.Schema({
     type: String,
      require: true,
   },  
-  // cart:{
-  //   productId:{
-  //     ref:'products',
-  //     type:String
-  //   },
-  //   Quantity:Number
-  // },
     email :{
       type:String,
       unique:true
@@ -25,7 +18,18 @@ const userSchema = new mongoose.Schema({
       type: String,
       default: 'GENERAL',
     },
-    profilePic:String
+    profilePic:String,
+    userDetail:{
+      name: { type: String, trim: true },
+      pincode: { type: Number, min: 100000, max: 999999 },
+      landmark: String,
+      address: String,
+      city: String,
+      state: String,
+      phoneNumber: { type: Number, match: [/^\d{10}$/, 'Please enter a valid 10-digit phone number'] },
+      alternatePhoneNumber: { type: Number, match: [/^\d{10}$/, 'Please enter a valid 10-digit phone number'] },
+   }
+
 },{
     timestamps:true
 })

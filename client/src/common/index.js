@@ -82,6 +82,18 @@ const summmryApi={
         url:`${backendDomin}/api/getFilterProducts`,
         method:"get"
     },
+    sendSMS:{
+        url:`${backendDomin}/api/sendSMS`,
+        method:"post"
+    },
+    placeOrder:{
+        url:`${backendDomin}/api/placeOrder`,
+        method:"post"
+    },
+    getOrderHistory:{
+        url:`${backendDomin}/api/getOrderHistory`,
+        method:"get"
+    },
 }
  export default summmryApi
  

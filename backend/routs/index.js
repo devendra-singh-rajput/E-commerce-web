@@ -24,6 +24,9 @@ const deleteCartProduct = require('../controllers/user/deleteCartProduct')
 const searchProducts = require('../controllers/products/searchProducts')
 const { getFilteredProducts } = require('../controllers/products/getFilterProducts')
 const countProductsInCart = require('../controllers/user/CountProductsCart')
+const sendSMS = require('../controllers/order/sendSMS')
+const { placeOrder } = require('../controllers/order/OrderCreate')
+const { getOrderHistory } = require('../controllers/order/orderHistory')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
@@ -48,6 +51,11 @@ router.get('/countProductCart',authToken,countProductsInCart)
 router.get('/cartView',authToken,cartView)
 router.post('/updateCart',authToken,updateCart)
 router.delete('/deleteCartProduct',authToken,deleteCartProduct)
+
+// products order
+router.post("/sendSMS",authToken,sendSMS)
+router.post("/placeOrder",authToken,placeOrder)
+router.get("/getOrderHistory",authToken,getOrderHistory)
 
 
 module.exports=router

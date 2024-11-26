@@ -9,13 +9,8 @@ async function updateUser(req,res){
              ...(email&&{email:email}),
              ...(name&&{name:name}),
              ...(role&&{role:role})
-       }
-
-       const User= await userModel.findById(sessonUser)  
-        
-
-
-
+       } 
+       
         const updateUser= await userModel.findByIdAndUpdate(userId,payload)            
         res.status(200).json({
             data:updateUser,

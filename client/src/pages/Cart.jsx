@@ -3,7 +3,6 @@ import summaryApi from '../common';
 import Context from '../context';
 import INRcurrency from '../helpers/displayCurrency';
 import { MdDeleteForever } from "react-icons/md";
-import { BiMoneyWithdraw } from "react-icons/bi";
 import { Link } from 'react-router-dom';
 
 const Cart = () => {
@@ -197,7 +196,7 @@ const handelLoading = async () => {
           {loading ? (
             <div className='h-36 bg-slate-200 my-3 border rounded border-slate-300 animate-pulse'></div>
           ) : (
-            <div className='h-36 bg-white p-2 rounded border border-slate-300'>
+            <div className='h-40 bg-white p-2 rounded border border-slate-300'>
               <h2 className='text-white bg-primary px-4 py-1 mb-2 rounded flex justify-center'>Summary</h2>
               <div className='flex justify-between items-center px-4'>
                 <p className='text-lg font-semibold'>Total Quantity</p>
@@ -209,9 +208,10 @@ const handelLoading = async () => {
                   {INRcurrency(totalAmount)}
                 </p>
               </div>
-              <div className='flex'>
-                <button className='bg-blue-600 px-2 text-white rounded'>Payment</button>
-                <BiMoneyWithdraw />
+              <div className='flex justify-evenly my-3'>
+                <button className='border-2 border-primary hover:bg-primary px-2 hover:text-white text-primary font-semibold rounded'>Payment</button>
+                
+              <Link to={"/OrderHistoryPage"} className='border-2 border-primary font-semibold hover:bg-primary px-2 hover:text-white text-primary rounded'>OrderHistory</Link>
               </div>
             </div>
           )}

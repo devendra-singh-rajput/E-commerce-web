@@ -18,7 +18,6 @@ function App() {
      method: summmryApi.current_user.method,
       headers: {
                 "Content-Type": "application/json",
-                // add more headers here if required
             },
      credentials:'include'
     })

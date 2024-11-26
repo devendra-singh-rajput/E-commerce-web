@@ -2,78 +2,156 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import summmryApi from "../common";
 import INRcurrency from "../helpers/displayCurrency";
+import { toast } from 'react-toastify';
+import { useSelector } from "react-redux";
 
 const CheckoutPage = () => {
   const { productId } = useParams();
+  const user = useSelector(state => state?.user?.user)
   const [productData, setProductData] = useState(null);
   const [userData, setUserData] = useState({
-    name: "",
-    pincode: "",
-    locality: "",
-    landmark: "",
-    address: "",
-    street: "",
-    city: "",
-    state: "",
-    phoneNumber: "",
-    alternatePhoneNumber: "",
+    name: user.userDetail?.name || '',
+    email: user.email || '',
+    pincode: user.userDetail?.pincode || '',
+    landmark: user.userDetail?.landmark || '',
+    address: user.userDetail?.address || '',
+    city: user.userDetail?.city || '',
+    state: user.userDetail?.state || '',
+    phoneNumber: user.userDetail?.phoneNumber || '',
+    alternatePhoneNumber: user.userDetail?.alternatePhoneNumber || ''
   });
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [mobileNumber, setMobileNumber] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [errors, setErrors] = useState({})
   const [quantity, setQuantity] = useState(1);
-  const [shippingCharge, setShippingCharge] = useState(50); // Default shipping charge
-  const [tax, setTax] = useState(0); // Tax placeholder
-  const [totalAmount, setTotalAmount] = useState(0); // Calculated total amount
+  const [shippingCharge, setShippingCharge] = useState(50);
+  const [tax, setTax] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("COD");
+  const [productName, setProductName] = useState("");
+  const [productImage, setProductImage] = useState("");
+
+
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        setLoading(true);
         const response = await fetch(summmryApi.productDetailes.url, {
-          cache: "force-cache",
+          cache: 'force-cache',
           method: summmryApi.productDetailes.method,
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            productId: productId,
-          }),
+            productId:productId
+          })
         });
         const dataResponse = await response.json();
-        setProductData(dataResponse?.data);
+        setProductData(dataResponse.data);
       } catch (error) {
         console.error("Failed to fetch product details:", error);
       } finally {
-        setLoading(false);
       }
     };
-
     fetchProductDetails();
   }, [productId]);
-
+  // setMobileNumber(userData.phoneNumber)
   useEffect(() => {
     if (productData) {
-      // Recalculate total amount whenever quantity or productData changes
       const productPrice = productData.sellingPrice * quantity;
+      setPrice(productData.sellingPrice)
       setTotalAmount(productPrice + shippingCharge + tax);
-      
+      setProductName(productData.productName)
+      setProductImage(productData.productImage[0])
     }
   }, [quantity, shippingCharge, tax, productData]);
-  
-  const handleSendOtp = () => {
-    setOtpSent(true);
-    console.log("OTP sent to mobile:", mobileNumber);
+
+  const validateInput = () => {
+    let newErrors = {};
+
+    // Basic validation patterns
+    const mobilePattern = /^\d{10}$/;
+    const pincodePattern = /^\d{6}$/;
+
+    if (!userData.name) newErrors.name = "Name is required";
+    if (!userData.pincode || !pincodePattern.test(userData.pincode)) newErrors.pincode = "Enter a valid 6-digit pincode";
+    if (!userData.city) newErrors.city = "City is required";
+    if (!userData.address) newErrors.address = "Address is required";
+    if (!userData.state) newErrors.state = "State is required";
+    if (userData.mobileNumber &&!mobilePattern.test(mobileNumber)) newErrors.mobileNumber = "Enter a valid 10-digit mobile number";
+    if (userData.alternatePhoneNumber && !mobilePattern.test(userData.alternatePhoneNumber)) newErrors.alternatePhoneNumber = "Alternate phone number should be 10 digits";
+    if (!otp && otpSent) newErrors.otp = "OTP is required after it's sent";
+    if (!selectedPaymentMethod) newErrors.paymentMethod = "Please select a payment method";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
-  
-  const handlePlaceOrder = () => {
-    console.log("Order placed with details:", userData);
-  };
-  
-  const handleAddressChange = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+
+  // const handleSendOtp = async () => {
+  //   if (!mobileNumber || errors.mobileNumber) {
+  //     alert("Please enter a valid 10-digit mobile number to receive OTP.");
+  //     return;
+  //   }
+  //   try {
+  //     setLoading(true);
+  //     const response = await fetch(summmryApi.sendSMS.url, {
+  //       method: summmryApi.sendSMS.method,
+  //       credentials:"include",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ mobileNumber }),
+  //     });
+  //     const result = await response.json();
+  //     setOtp(result.data)
+  //     if (result.success) setOtpSent(true);
+  //   } catch (error) {
+  //     console.error("Failed to send OTP:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const handlePlaceOrder = async () => {
+    if (!validateInput()) {
+      alert("Please correct the errors before placing an order.");
+      return;
+    }
+    try {
+      setLoading(true)
+      const response = await fetch(summmryApi.placeOrder.url, {
+        method: summmryApi.placeOrder.method,
+        credentials:'include',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId,
+          quantity,
+          productImage,
+          productName,
+          shippingCharge,
+          tax,
+          price,
+          totalAmount,
+          userData,
+          otp,
+          paymentMethod: selectedPaymentMethod,
+        }),
+      });
+      const result = await response.json();
+      
+
+      if (result.success) {
+        toast.success(result.message)
+        console.log("Order placed successfully");
+        setLoading(false)
+
+      }else{
+        toast.error(result.message)
+      }
+    } catch (error) {
+      console.error("Failed to place order:", error);
+    }
   };
 
   const increaseQuantity = () => {
@@ -85,143 +163,68 @@ const CheckoutPage = () => {
       setQuantity((prevQuantity) => prevQuantity - 1);
     }
   };
+
+  const handleAddressChange = (e) =>{
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: "" })
+  }
+
   const DiscountPercentage = ((productData?.price - productData?.sellingPrice) / productData?.price) * 100;
-  
+
   return (
     <div className="container mx-auto p-4 lg:flex lg:justify-between">
-      {/* Left Section - Address, Delivery, Payment */}
       <div className="w-full lg:w-3/5 p-4 bg-white rounded shadow-md space-y-6">
-        {/* 1. Delivery Address */}
         <section className="border-b pb-4">
           <h2 className="text-xl font-semibold mb-3">Delivery Address</h2>
           <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Address inputs */}
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={userData.name}
-              onChange={handleAddressChange}
+            <input type="text"required name="name" placeholder="Name" value={userData.name} onChange={handleAddressChange} className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full" />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}
+            <input type="text"required name="pincode" placeholder="Pincode" value={userData.pincode} onChange={handleAddressChange} className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full" />
+            {errors.pincode && <p className="text-red-500">{errors.pincode}</p>}
+            <input type="text"required name="city" placeholder="City" value={userData.city} onChange={handleAddressChange} className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full" />
+            {errors.city && <p className="text-red-500">{errors.city}</p>}
+            <input type="text" name="landmark"placeholder="Landmark"value={userData.landmark}onChange={handleAddressChange}
               className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
             />
+            <textarea name="address"required placeholder="Address" value={userData.address} onChange={handleAddressChange} className="border p-2 rounded w-full h-24 md:col-span-2 border-slate-400 hover:border-primary  hover:bg-slate-100 hover:shadow-md" />
+            {errors.address && <p className="text-red-500">{errors.address}</p>}
+            <input type="text"required name="state" placeholder="State" value={userData.state} onChange={handleAddressChange}  className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full" />
+            {errors.state && <p className="text-red-500">{errors.state}</p>}
             <input
-              type="text"
-              name="pincode"
-              placeholder="Pincode"
-              value={userData.pincode}
-              onChange={handleAddressChange}
+              type="text"name="alternatePhoneNumber"placeholder="Alternate Phone Number"value={userData.alternatePhoneNumber}onChange={handleAddressChange}
               className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
             />
-            <input
-              type="text"
-              name="locality"
-              placeholder="Locality"
-              value={userData.locality}
-              onChange={handleAddressChange}
-              className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
-            />
-            <input
-              type="text"
-              name="landmark"
-              placeholder="Landmark"
-              value={userData.landmark}
-              onChange={handleAddressChange}
-              className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
-            />
-            <textarea
-              name="address"
-              placeholder="Address"
-              value={userData.address}
-              onChange={handleAddressChange}
-              className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full h-24 md:col-span-2 resize-none"
-            />
-            <input
-              type="text"
-              name="street"
-              placeholder="Street"
-              value={userData.street}
-              onChange={handleAddressChange}
-              className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
-            />
-            <input
-              type="text"
-              name="city"
-              placeholder="City/Town"
-              value={userData.city}
-              onChange={handleAddressChange}
-              className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
-            />
-            <input
-              type="text"
-              name="state"
-              placeholder="State"
-              value={userData.state}
-              onChange={handleAddressChange}
-              className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
-            />
-            <input
-              type="text"
-              name="phoneNumber"
-              placeholder="Phone Number"
-              value={userData.phoneNumber}
-              onChange={handleAddressChange}
-              className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
-            />
-            <input
-              type="text"
-              name="alternatePhoneNumber"
-              placeholder="Alternate Phone Number"
-              value={userData.alternatePhoneNumber}
-              onChange={handleAddressChange}
-              className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
-            />
+          {errors.alternatePhoneNumber && <p className="text-red-500">{errors.alternatePhoneNumber}</p>}
           </form>
         </section>
-
-        {/* 2. Mobile Number & OTP Validation */}
-        <section className=" pb-4">
+        <section>
           <h2 className="text-xl font-semibold mb-3">Mobile Verification</h2>
-          <input
-            type="text"
-            placeholder="Enter Mobile Number"
-            value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
-            className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full mb-3"
-          />
-          {otpSent ? (
-            <div className="flex items-center">
-              <input
-                type="text"
-                placeholder="Enter OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-1/2"
-              />
-            </div>
+          <input type="text"required placeholder="Enter Mobile Number"name="phoneNumber"  value={userData.phoneNumber}
+          onChange={handleAddressChange} className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md mb-3 p-2 rounded w-full" />
+          {errors.mobileNumber && <p className="text-red-500">{errors.mobileNumber}</p>}
+          {/* {otpSent ? (
+            <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} className="border p-2 rounded w-full" />
           ) : (
-            <button
-              onClick={handleSendOtp}
-              className="px-4 py-2 border-primary text-gray-900 border-2 hover:bg-primary hover:text-white rounded font-medium"
-            >
-              Send OTP
-            </button>
-          )}
+            <button onClick={handleSendOtp} className="px-4 py-2 bg-primary text-white rounded">Send OTP</button>
+          )} */}
         </section>
-
-        {/* 3. Payment Method */}
         <section className="border-b pb-4">
           <h2 className="text-xl font-semibold mb-3">Payment Options</h2>
           <label className="flex items-center mb-2">
-            <input type="radio" name="payment" className="mr-2" /> Cash on Delivery
+            <input type="radio"required name="payment" value="COD"
+              checked={selectedPaymentMethod === "COD"}
+              onChange={(e) => setSelectedPaymentMethod(e.target.value)} className="mr-2" /> Cash on Delivery
           </label>
           <label className="flex items-center">
-            <input type="radio" name="payment" className="mr-2" /> Credit / Debit Card
+            <input type="radio"required name="payment"   value="Card"
+              checked={selectedPaymentMethod === "Card"}
+              onChange={(e) => setSelectedPaymentMethod(e.target.value)} className="mr-2" /> Credit / Debit Card / UPI
           </label>
         </section>
       </div>
 
       {/* Right Section - Order Summary */}
-      <div className="w-full lg:w-1/3 mt-6 lg:mt-0 p-4 bg-white rounded shadow-md">
+      <div className="w-full lg:w-1/3 mt-6 lg:mt-0 p-4 h-fit bg-white rounded shadow-md">
         <h2 className="text-xl font-semibold mb-3">Order Summary</h2>
 
         {productData ? (
@@ -261,12 +264,20 @@ const CheckoutPage = () => {
 
         {/* Extra Charges */}
         <div className="flex justify-between mb-2">
-          <p>Shipping & handling:</p>
-          <p>₹{shippingCharge}</p>
+          <p>Price</p>
+          <p>₹{productData?.price}</p>
+        </div>
+        <div className="flex justify-between mb-2">
+          <p>Discount</p>
+          <p>- ₹{(productData?.price-productData?.sellingPrice)*quantity}</p>
         </div>
         <div className="flex justify-between mb-2">
           <p>Total before tax:</p>
           <p>₹{productData ? productData.sellingPrice * quantity : "..."}</p>
+        </div>
+        <div className="flex justify-between mb-2">
+          <p>Shipping & handling:</p>
+          <p>₹{shippingCharge}</p>
         </div>
         <div className="flex justify-between mb-2">
           <p>Estimated tax:</p>
@@ -282,9 +293,9 @@ const CheckoutPage = () => {
         {/* Place Order Button */}
         <button
           onClick={handlePlaceOrder}
-          className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded"
-        >
-          Place Order
+          className={`w-full mt-4 px-4 py-2 bg-primary hover:bg-secondary text-white rounded ${loading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={loading}>
+          {loading ? "Loading in..." : "Place Order"}
+          
         </button>
       </div>
     </div>
