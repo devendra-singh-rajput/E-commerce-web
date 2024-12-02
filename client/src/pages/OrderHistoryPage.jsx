@@ -41,7 +41,6 @@ const OrderHistory = () => {
                             <p className="text-sm text-gray-500">Ordered on: {new Date(order.createdAt).toLocaleDateString()}</p>
                             <div className="border-t border-red-200 my-4"></div>
                             <p className='flex justify-between'><span className="font-semibold  ">Total Amount  :</span> <span>₹{order.totalAmount}</span></p>
-                            <p className='flex justify-between'><span className="font-semibold  ">Shipping Charge  :</span> <span>₹{order.shippingCharge}</span></p>
                             <p className='flex justify-between'><span className="font-semibold  ">Status  :</span> <span>{order.status}</span></p>
                             <p className='flex justify-between'><span className="font-semibold  ">Payment Status  :</span> <span>{order.paymentStatus}</span></p>
                             <p className='flex justify-between'><span className="font-semibold  ">Delivery Option  :</span> <span>{order.deliveryOption}</span></p>

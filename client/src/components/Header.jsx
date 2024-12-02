@@ -54,7 +54,7 @@ const Header = () => {
           </Link>
         </div>
         <div className='hidden lg:flex items-center  w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'>
-          <input type="text" placeholder='search item hear...' className='w-full outline-none ' onChange={onSerchProducts} value={search}/>
+          <input type="text" placeholder='Search items hear...' className='w-full outline-none px-4' onChange={onSerchProducts} value={search}/>
           <div className='text-lg min-w-[50px] h-8 bg-primary flex items-center justify-center rounded-r-full
           text-white'><IoSearchSharp /></div></div>
         <div className='flex items-center gap-4 md:gap-7'>

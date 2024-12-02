@@ -94,6 +94,14 @@ const summmryApi={
         url:`${backendDomin}/api/getOrderHistory`,
         method:"get"
     },
+    getAllOrders:{
+        url:`${backendDomin}/api/getAllOrders`,
+        method:"get"
+    },
+    updateOrders:{
+        url:`${backendDomin}/api/updateOrder`,
+        method:"put"
+    },
 }
  export default summmryApi
  

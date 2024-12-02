@@ -60,10 +60,18 @@ const ProductDetail = () => {
     }
   };
 
+  // useEffect(() => {
+  //   fetchProductDetails();
+  // }, [params]);
+
   useEffect(() => {
+    // Scroll to the top of the page
+    window.scrollTo(0, 0);
+    
+    // Fetch product details
     fetchProductDetails();
   }, [params]);
-
+  
   const onMouseEnterImage = (imageUrl) => {
     setActiveImage(imageUrl)
   }

@@ -16,12 +16,12 @@ const ordersSchema = new Schema({
   status: {
     type: String,
     default: "Pending",
-    enum: ["Pending", "Shipped", "Delivered","Cancel"],
+    // enum: ["Pending", "Shipped","Delivered","Cancel"],
   },
   paymentStatus: {
     type: String,
     default: "Unpaid",
-    enum: ["Unpaid", "Paid", "Failed"],
+    // enum: ["Unpaid", "Paid", "Failed"],
   },
   deliveryOption: {
     type: String,

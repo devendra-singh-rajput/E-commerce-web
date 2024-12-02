@@ -27,6 +27,7 @@ const countProductsInCart = require('../controllers/user/CountProductsCart')
 const sendSMS = require('../controllers/order/sendSMS')
 const { placeOrder } = require('../controllers/order/OrderCreate')
 const { getOrderHistory } = require('../controllers/order/orderHistory')
+const { getAllOrders, updateOrder } = require('../controllers/order/getAllOrders')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
@@ -56,6 +57,8 @@ router.delete('/deleteCartProduct',authToken,deleteCartProduct)
 router.post("/sendSMS",authToken,sendSMS)
 router.post("/placeOrder",authToken,placeOrder)
 router.get("/getOrderHistory",authToken,getOrderHistory)
+router.get("/getAllOrders",authToken,getAllOrders)
+router.put("/updateOrder",authToken,updateOrder)
 
 
 module.exports=router

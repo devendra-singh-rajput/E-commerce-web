@@ -29,8 +29,9 @@ const AdminPenal = () => {
         {/* navigation */}
         <div>
           <nav className='grid p-2'>
-            <Link to={'all-users'} className='py-2 px-1 hover:bg-slate-100 border shadow-md '>All User</Link>
+            <Link to={'all-users'} className='py-2 px-1 hover:bg-slate-100 border shadow-md '>All Users</Link>
             <Link to={'all-products'} className='py-2 px-1 hover:bg-slate-100 border mt-1 shadow-md'>All Products</Link>
+            <Link to={'all-orders'} className='py-2 px-1 hover:bg-slate-100 border mt-1 shadow-md'>All Orders</Link>
 
 
           </nav>

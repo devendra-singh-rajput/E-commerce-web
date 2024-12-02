@@ -13,6 +13,7 @@ import Cart from "../pages/Cart"
 import SearchProducts from "../pages/SearchProducts"
 import CheckoutPage from "../pages/orderCheckOut"
 import OrderHistoryPage from "../pages/OrderHistoryPage"
+import AllOrders from "../pages/AllOrders"
 
 
 const router = createBrowserRouter([{
@@ -71,6 +72,9 @@ const router = createBrowserRouter([{
                 }, {
                     path:"all-products"
                     ,element:<AllProducts/>
+                }, {
+                    path:"all-orders"
+                    ,element:<AllOrders/>
                 },
             ]
         }
