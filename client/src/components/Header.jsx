@@ -74,7 +74,7 @@ const Header = () => {
                 <div className='absolute bg-white bottom-0 top-11 h-fit pd-2 shadow-lg rounded '>
                   <nav >
                     {
-                      user?.role === ROLE.ADMIN && <Link to={'/admin-panel/all-products'} className='whitespace-nowrap hidden md:block  bg-white hover:bg-slate-100 p-2 rounded-lg' onClick={() => setMenuDisplay(prev => !prev)}>Admin Panel</Link>
+                      user?.role === ROLE.ADMIN && <Link to={'/admin-panel/Dashboard'} className='whitespace-nowrap hidden md:block  bg-white hover:bg-slate-100 p-2 rounded-lg' onClick={() => setMenuDisplay(prev => !prev)}>Admin Panel</Link>
                     }
                   </nav>
                 </div>

@@ -28,6 +28,7 @@ const sendSMS = require('../controllers/order/sendSMS')
 const { placeOrder } = require('../controllers/order/OrderCreate')
 const { getOrderHistory } = require('../controllers/order/orderHistory')
 const { getAllOrders, updateOrder } = require('../controllers/order/getAllOrders')
+const { updatedCustomization, getCustomizations } = require('../controllers/user/customizetion')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
@@ -36,6 +37,9 @@ router.get("/userLogout",userLogout)
 //admin penal
 router.get("/all-user",authToken,AllUser)
 router.put("/updateUser",authToken,updateUser)
+router.post('/updateCustomization',authToken,updatedCustomization)
+router.get("/getCustomization",authToken,getCustomizations)
+
 //products
 router.post("/uploadProduct",authToken,uploadProduct)
 router.get("/getProducts",getProducts)

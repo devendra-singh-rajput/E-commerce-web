@@ -4,7 +4,7 @@ const cloudName = 'dagcgd3is'; // Your Cloudinary cloud name
 const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
 const uploadImages = async (files) => {
-  console.log("helper", files); // Log the files for debugging
+  // console.log("helper", files); // Log the files for debugging
 
   const uploadPromises = files.map((image) => {
     const formData = new FormData();

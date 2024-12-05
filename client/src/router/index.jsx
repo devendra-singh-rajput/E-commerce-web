@@ -14,6 +14,8 @@ import SearchProducts from "../pages/SearchProducts"
 import CheckoutPage from "../pages/orderCheckOut"
 import OrderHistoryPage from "../pages/OrderHistoryPage"
 import AllOrders from "../pages/AllOrders"
+import CustomizationPage from "../pages/costomize"
+import Dashboard from "../pages/dashboard"
 
 
 const router = createBrowserRouter([{
@@ -67,6 +69,10 @@ const router = createBrowserRouter([{
             ,element:<AdminPenal/>
             ,children:[
                 {
+                    path:"Dashboard"
+                    ,element:<Dashboard/>
+                },
+                {
                     path:"all-users"
                     ,element:<AllUser/>
                 }, {
@@ -75,6 +81,10 @@ const router = createBrowserRouter([{
                 }, {
                     path:"all-orders"
                     ,element:<AllOrders/>
+                },
+                {
+                    path:"all-customization"
+                    ,element:<CustomizationPage/>
                 },
             ]
         }

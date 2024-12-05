@@ -216,7 +216,7 @@ const CheckoutPage = () => {
               onChange={(e) => setSelectedPaymentMethod(e.target.value)} className="mr-2" /> Cash on Delivery
           </label>
           <label className="flex items-center">
-            <input type="radio"required name="payment"   value="Card"
+            <input type="radio"required name="payment" disabled   value="Card"
               checked={selectedPaymentMethod === "Card"}
               onChange={(e) => setSelectedPaymentMethod(e.target.value)} className="mr-2" /> Credit / Debit Card / UPI
           </label>

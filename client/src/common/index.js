@@ -102,6 +102,14 @@ const summmryApi={
         url:`${backendDomin}/api/updateOrder`,
         method:"put"
     },
+    getCustomization:{
+        url:`${backendDomin}/api/getCustomization`,
+        method:"get"
+    },
+    updateCustomization:{
+        url:`${backendDomin}/api/updateCustomization`,
+        method:"post"
+    },
 }
  export default summmryApi
  

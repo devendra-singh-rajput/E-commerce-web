@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 const productCategroy=[
     {id :1,label:"Airpodes",value:"airpodes"},
     {id :2,label:"Camera",value:"camera"},
@@ -13,3 +15,19 @@ const productCategroy=[
     {id :12,label:"Watches",value:"watches"}
 ]
 export default productCategroy
+
+useEffect(() => {
+    const [categories,setCategories]=useState([])
+    const fetchCustomization = async () => {
+      try {
+        const { data } = await axios.get(summmryApi.getCustomization.url, {
+          withCredentials: true,
+        });
+        setCategories(data.categories || []);
+      } catch (error) {
+        console.error("Failed to fetch customization:", error);
+      }
+    };
+
+    fetchCustomization();
+  }, []);

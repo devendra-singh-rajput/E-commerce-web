@@ -76,11 +76,11 @@ const AllOrders = () => {
     );
 
   return (
-    <div className="p-2 bg-gray-100 min-h-screen">
-       <div className="bg-white py-4 px-4 flex justify-between items-center shadow-md mb-4">
+    <div className="p-1 bg-gray-100 min-h-screen">
+       <div className="bg-white py-4 px-4 flex justify-between items-center shadow-md mb-4 ">
         <h1 className='font-bold text-lg'>Manage Orders</h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-[calc(100vh-190px)] overflow-y-scroll ">
         {parentOrders.length > 0 ? (
           parentOrders.map((parentOrder) =>
             parentOrder.orders.map((order) => (
@@ -162,10 +162,10 @@ const AllOrders = () => {
                   </p>
                   <p className="text-xs mb-2 flex justify-between">
                     <strong>Shipping Charges:</strong>{" "}
-                    <input
+                    <input disabled 
                       type="number"
                       placeholder="default 50+ more"
-                      value={order.shippingCharges || ""}
+                      value={order.shippingCharge || ""}
                       onChange={(e) =>
                         updateOrder(parentOrder._id, order._id, { shippingCharges: e.target.value })
                       }
