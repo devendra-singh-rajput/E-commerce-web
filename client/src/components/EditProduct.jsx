@@ -137,7 +137,7 @@ const EditProduct = ({ productData, onClose, fetchData }) => {
                             <div className='text-slate-500 flex justify-center items-center flex-col'>
                                 <span className='text-3xl'><FaCloudUploadAlt /></span>
                                 <p className='text-sm'>Upload Product Image</p>
-                                <input type="file" id="uploadProductImage" name="uploadProductImage" className='hidden' onChange={handleFileChange} />
+                                <input type="file" id="uploadProductImage" name="uploadProductImage" multiple accept="image/*" className='hidden' onChange={handleFileChange} />
                             </div>
                         </div>
                     </label>

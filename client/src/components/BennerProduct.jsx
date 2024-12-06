@@ -1,20 +1,38 @@
 // BennerProduct.js
 import React, { useState, useEffect } from 'react';
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
-// Import images
-import img1_webp from '../assest/banner/img1.webp';
-import img2_webp from '../assest/banner/img2.webp';
-import img3_jpg from '../assest/banner/img3.jpg';
-import img4_jpg from '../assest/banner/img4.jpg';
-import img5_webp from '../assest/banner/img5.webp';
-import img1_mobile from '../assest/banner/img1_mobile.jpg';
-import img2_mobile from '../assest/banner/img2_mobile.webp';
-import img3_mobile from '../assest/banner/img3_mobile.jpg';
-import img4_mobile from '../assest/banner/img4_mobile.jpg';
-import img5_mobile from '../assest/banner/img5_mobile.png';
+import summmryApi from '../common';
+import axios from "axios";
 
-const desktopImages = [img1_webp, img2_webp, img3_jpg, img4_jpg, img5_webp];
-const mobileImages = [img1_mobile, img2_mobile, img3_mobile, img4_mobile, img5_mobile];
+const desktopImages = [];
+const mobileImages = [];
+
+console.log("banners",desktopImages,
+  mobileImages)
+
+const getBanners = async () => {
+  try {
+    const { data } = await axios.get(summmryApi.getCustomization.url, {
+      withCredentials: true,
+    });
+     console.log("data",data)
+    if (data.banners.desktop||data.banners.mobile) {
+
+      desktopImages.push(...(data.banners.desktop || []));
+      mobileImages.push(...(data.banners.mobile || []));
+    }
+  } catch (error) {
+    console.error("Failed to fetch Banners:", error);
+  }
+};
+getBanners();
+
+
+
+
+
+
+
 
 const BennerProduct = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

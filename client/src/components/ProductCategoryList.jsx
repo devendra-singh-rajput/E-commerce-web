@@ -13,7 +13,7 @@ const ProductCategoryList = () => {
     setError(null);
     try {
       const response = await fetch(summmryApi.productCategory.url, {
-        cache: 'force-cache', // Add caching to prevent repeated requests
+        // cache: 'force-cache', // Add caching to prevent repeated requests
       });
       if (!response.ok) {
         throw new Error("Failed to fetch products");
