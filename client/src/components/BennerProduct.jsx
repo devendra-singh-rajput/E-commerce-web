@@ -7,15 +7,12 @@ import axios from "axios";
 const desktopImages = [];
 const mobileImages = [];
 
-console.log("banners",desktopImages,
-  mobileImages)
 
 const getBanners = async () => {
   try {
     const { data } = await axios.get(summmryApi.getCustomization.url, {
       withCredentials: true,
     });
-     console.log("data",data)
     if (data.banners.desktop||data.banners.mobile) {
 
       desktopImages.push(...(data.banners.desktop || []));
@@ -25,20 +22,13 @@ const getBanners = async () => {
     console.error("Failed to fetch Banners:", error);
   }
 };
-getBanners();
-
-
-
-
-
-
-
 
 const BennerProduct = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-
+  
   useEffect(() => {
+    getBanners();
     // Detect screen size
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768); // Assuming 768px is mobile size

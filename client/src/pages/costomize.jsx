@@ -53,15 +53,15 @@ const ImageUploader = ({ label, images, setImages, inputId }) => {
       </label>
       <div className="mt-4 grid grid-cols-4 gap-4">
         {images.map((image, index) => (
-          <div key={index} className="relative group">
+          <div key={index} className="relative group  bg-slate-200 rounded shadow-md">
             <img
               src={image}
               alt={`${label} Preview`}
-              className="w-full h-24 object-contain rounded border shadow-sm"
+              className="w-full h-24 object-contain rounded border shadow-sm mix-blend-multiply"
             />
             <button
               onClick={() => removeImage(index)}
-              className="absolute top-2 right-2 bg-primary text-white rounded-full hover:bg-secondary"
+              className="absolute rounded-full px-1 top-1 right-1  font-semibold text-primary bg-slate-200 hover:bg-primary hover:text-white"
             >
               &#x2715;
             </button>
@@ -105,13 +105,13 @@ const CategoryManager = ({ categories, setCategories }) => {
         </button>
       </div>
       {categories.length > 0 && (
-        <ul className="mt-4 flex flex-wrap gap-2">
+        <ul className="mt-4 flex flex-wrap gap-2 ">
           {categories.map((category, index) => (
-            <li key={index} className="relative text-sm bg-gray-200 px-3 pr-7 py-1 rounded shadow-sm">
+            <li key={index} className="relative text-sm bg-gray-100 px-3 pr-7 border py-1 rounded shadow-md">
               {category}
               <button
                 onClick={() => removeCategory(index)}
-                className="absolute top-1 right-2 text-red-500"
+                className="absolute top-1 right-2 font-semibold text-red-500"
               >
                 &#x2715;
               </button>
@@ -232,7 +232,7 @@ const CustomizationPage = () => {
                     className={`absolute top-1 right-1 ${
                       isDeletingLogo
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-red-500 text-white"
+                        : "rounded-full px-1 top-1 right-1 text-sm text-primary bg-white hover:bg-primary hover:text-white"
                     } p-1 rounded-full`}
                   >
                     {isDeletingLogo ? "..." : "✖"}

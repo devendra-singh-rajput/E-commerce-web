@@ -9,9 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import summmryApi from "../common";
 import { setUserDetaile } from "../sotre/userSlice";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ROLE from "../common/role";
 import Context from "../context";
+import axios from "axios";
 const Header = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state?.user?.user)
@@ -20,7 +21,27 @@ const Header = () => {
   const navigate =useNavigate()
   const searchInput=useLocation()
   const [search,setSearch]=useState(searchInput?.search?.split("=")[1])
+  const [newLogo,setNewLogo]=useState('')
 
+
+  //get logo
+  const getLogo = async () => {
+    try {
+      const { data } = await axios.get(summmryApi.getCustomization.url, {
+        withCredentials: true,
+      });
+      if (data?.logo) {
+        setNewLogo(data?.logo)
+      }
+    } catch (error) {
+      console.error("Failed to fetch logo:", error);
+    }
+  };
+  useEffect(()=>{
+  getLogo()
+},[])
+
+console.log(newLogo)
   const userLogout = async () => {
     const fetchData = await fetch(summmryApi.logout_user.url, {
       method: summmryApi.logout_user.method,
@@ -47,10 +68,10 @@ const Header = () => {
 
   return (
     <header className='h-16 shadow-md bg-white fixed w-full z-40'>
-      <div className="h-full container mx-auto flex items-center px-4 justify-between">
+      <div className="h-full container mx-auto flex items-center px-4 justify-between ">
         <div>
           <Link to={"/"}>
-            <img src={logo} width={150} height={70} alt="aashapura logo" />
+            <img src={newLogo||logo} className="overflow-hidden w-44 h-12" alt="Ashapura Logo" />
           </Link>
         </div>
         <div className='hidden lg:flex items-center  w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'>

@@ -38,7 +38,7 @@ router.get("/userLogout",userLogout)
 router.get("/all-user",authToken,AllUser)
 router.put("/updateUser",authToken,updateUser)
 router.post('/updateCustomization',authToken,updatedCustomization)
-router.get("/getCustomization",authToken,getCustomizations)
+router.get("/getCustomization",getCustomizations)
 
 //products
 router.post("/uploadProduct",authToken,uploadProduct)
