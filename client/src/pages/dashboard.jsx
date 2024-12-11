@@ -2,55 +2,58 @@ import React, { useState, useEffect } from 'react';
 import { Line, Bar, Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, BarElement } from 'chart.js';
 import { FaShoppingCart, FaUsers, FaBoxOpen, FaChartLine } from 'react-icons/fa';
+import axios from 'axios';
+import summmryApi from '../common';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, BarElement);
 
 const Dashboard = () => {
-  const [stats, setStats] = useState({
-    totalSales: 200000,
-    totalOrders: 1250,
-    totalUsers: 1500,
-    totalProducts: 300,
-    pendingOrders: 120,
-    revenueToday: 5000,
-  });
+  const [stats, setStats] = useState({});
+  const [orderData, setOrderData] = useState([]);
+  const [orderStatus, setOrderStatus] = useState({});
+  const [categorySales, setCategorySales] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const [orderData, setOrderData] = useState([
-    { date: '2024-12-01', revenue: 2000 },
-    { date: '2024-12-02', revenue: 3000 },
-    { date: '2024-12-03', revenue: 1500 },
-    { date: '2024-12-04', revenue: 5000 },
-    { date: '2024-12-05', revenue: 2500 },
-  ]);
-
-  const [orderStatus, setOrderStatus] = useState({
-    "deliverd":500,
-    "Shipped": 1000,
-    "Pending": 150,
-    "Canceled": 100,
-  });
-
-  const [categorySales, setCategorySales] = useState({
-    "Electronics": 50000,
-    "Clothing": 30000,
-    "Books": 20000,
-    "Home Appliances": 10000,
-    "Toys": 15000,
-  });
-
-  const [loading, setLoading] = useState(false);
-
+  // Fetch data from API
   useEffect(() => {
-    setLoading(false);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(summmryApi.getDashboardData.url,{withCredentials:true}); 
+        if (response.data.success) {
+          const data = response.data.data;
+          setStats({
+            totalUsers: data.totalUsers,
+            totalProducts: data.totalProducts,
+            totalOrders: data.totalOrders,
+            TotalRevenue: data.totalRevenue,
+          });
+          console.log(response)
+          setOrderData(data.orderData);
+          setOrderStatus(data.orderStatus);
+          setCategorySales(data.categorySales);
+        }
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  // Total Sales by Day (Line Chart)
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+
+  // Chart Data
   const salesData = {
-    labels: orderData.map(order => order.date),
+    labels: orderData?.map(order => order.date),
     datasets: [
       {
         label: 'Revenue',
-        data: orderData.map(order => order.revenue),
+        data: orderData?.map(order => order.revenue),
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         fill: true,
@@ -59,19 +62,17 @@ const Dashboard = () => {
     ],
   };
 
-  // Order Status Distribution (Pie Chart)
   const orderStatusData = {
-    labels: Object.keys(orderStatus),
+    labels: Object?.keys(orderStatus),
     datasets: [
       {
-        data: Object.values(orderStatus),
-        backgroundColor: ['#098000','#36A2EB', '#FFCE56', '#FF5733'],
+        data: Object?.values(orderStatus),
+        backgroundColor: ['#059000', '#FF5733', '#36A2EB', '#FFCE56'],
         hoverOffset: 4,
       },
     ],
   };
 
-  // Revenue by Category (Bar Chart)
   const categorySalesData = {
     labels: Object.keys(categorySales),
     datasets: [
@@ -85,21 +86,31 @@ const Dashboard = () => {
     ],
   };
 
-  // Product Category Distribution (Doughnut Chart)
   const productCategoryData = {
     labels: Object.keys(categorySales),
     datasets: [
       {
         data: Object.values(categorySales),
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+        backgroundColor: [
+          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
+          '#66FF66', '#FF66B2', '#33CCFF', '#FF4444', '#AA66CC', '#FFCC00',
+          '#0099CC', '#9933CC', '#00CC99', '#FF9933', '#FF5733', '#C70039',
+          '#900C3F', '#DAF7A6', '#581845', '#FFC300', '#28B463', '#8E44AD',
+          '#1F618D', '#117A65', '#D35400', '#7D3C98', '#E67E22', '#2ECC71',
+          '#F1C40F', '#3498DB', '#E74C3C', '#9B59B6', '#16A085', '#34495E',
+          '#2C3E50', '#F39C12', '#D5DBDB', '#7FB3D5', '#76D7C4', '#F7DC6F',
+          '#A569BD', '#F5B7B1', '#82E0AA'
+        ]
+        
       },
     ],
   };
 
+
   return (
     <div className="flex flex-col items-center p-1 bg-gray-100 min-h-screen ">
       {/* Main Dashboard Content */}
-      <div className="w-full p-1">
+      <div className="w-full p-1 h-[calc(100vh-3rem)] scrollbar-none overflow-y-scroll">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
@@ -119,8 +130,8 @@ const Dashboard = () => {
           <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
             <FaChartLine className="text-4xl text-yellow-600 mr-4" />
             <div>
-              <h3 className="text-xl font-semibold">Revenue Today</h3>
-              <p className="text-lg">₹{stats.revenueToday}</p>
+              <h3 className="text-xl font-semibold">Total Revenue</h3>
+              <p className="text-lg">₹ {stats.TotalRevenue}</p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
@@ -181,7 +192,7 @@ const Dashboard = () => {
         {/* Second Row of Graphs */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 ">
           {/* Pie Chart: Order Status */}
-          <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+          <div className="bg-white p-4 rounded-lg shadow-md mb-6 ">
             <h3 className="text-xl font-semibold mb-4">Order Status</h3>
             <Pie 
               data={orderStatusData} 

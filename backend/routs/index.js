@@ -29,6 +29,7 @@ const { placeOrder } = require('../controllers/order/OrderCreate')
 const { getOrderHistory } = require('../controllers/order/orderHistory')
 const { getAllOrders, updateOrder } = require('../controllers/order/getAllOrders')
 const { updatedCustomization, getCustomizations } = require('../controllers/user/customizetion')
+const { getDashboardData } = require('../controllers/user/getDashboardData')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
@@ -39,6 +40,7 @@ router.get("/all-user",authToken,AllUser)
 router.put("/updateUser",authToken,updateUser)
 router.post('/updateCustomization',authToken,updatedCustomization)
 router.get("/getCustomization",getCustomizations)
+router.get("/getDashboardData",authToken,getDashboardData)
 
 //products
 router.post("/uploadProduct",authToken,uploadProduct)

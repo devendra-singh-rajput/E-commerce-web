@@ -40,8 +40,6 @@ const Header = () => {
   useEffect(()=>{
   getLogo()
 },[])
-
-console.log(newLogo)
   const userLogout = async () => {
     const fetchData = await fetch(summmryApi.logout_user.url, {
       method: summmryApi.logout_user.method,
@@ -71,7 +69,7 @@ console.log(newLogo)
       <div className="h-full container mx-auto flex items-center px-4 justify-between ">
         <div>
           <Link to={"/"}>
-            <img src={newLogo||logo} className="overflow-hidden w-44 h-12" alt="Ashapura Logo" />
+            <img src={newLogo||logo} className="overflow-hidden  h-12" alt="Ashapura Logo" />
           </Link>
         </div>
         <div className='hidden lg:flex items-center  w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'>

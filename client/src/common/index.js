@@ -110,6 +110,10 @@ const summmryApi={
         url:`${backendDomin}/api/updateCustomization`,
         method:"post"
     },
+    getDashboardData:{
+        url:`${backendDomin}/api/getDashboardData`,
+        method:"get"
+    },
 }
  export default summmryApi
  

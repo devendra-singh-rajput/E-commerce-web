@@ -10,6 +10,7 @@ import CategoryProductvertical from '../components/categoryProductvertical';
 import Context from '../context';
 import addToCart from '../helpers/addToCart';
 import ShowAllProducts from '../components/ShowAllProducts';
+import scrollTop from '../helpers/scrollTop';
 const ProductDetail = () => {
   // Initialize state variables
   const [data, setData] = useState({
@@ -66,7 +67,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     // Scroll to the top of the page
-    window.scrollTo(0, 0);
+    scrollTop()
     
     // Fetch product details
     fetchProductDetails();

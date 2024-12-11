@@ -195,12 +195,12 @@ const CustomizationPage = () => {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50">
+    <div className=" min-h-screen bg-gray-50">
       <div className="bg-white py-4 px-4 flex justify-between items-center shadow-md mb-4">
         <h1 className="font-bold text-lg">Website Customization</h1>
       </div>
 
-      <div className="bg-white p-6">
+      <div className="p-6 bg-white ">
         <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-20">
           <div>
             <label className="block text-lg font-semibold mb-2">Upload Logo</label>
