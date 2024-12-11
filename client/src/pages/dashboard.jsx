@@ -28,7 +28,6 @@ const Dashboard = () => {
             totalOrders: data.totalOrders,
             TotalRevenue: data.totalRevenue,
           });
-          console.log(response)
           setOrderData(data.orderData);
           setOrderStatus(data.orderStatus);
           setCategorySales(data.categorySales);
@@ -114,10 +113,15 @@ const Dashboard = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-            <FaShoppingCart className="text-4xl text-blue-600 mr-4" />
+           <div className='relative'>
+           <FaShoppingCart  className="text-5xl font-bold text-blue-600 mr-4" />
+            <div className=' text-white p-1 flex items-center justify-center w-5 h-5 rounded-full top-2 right-6 absolute'>
+                <p className='text-sm'>{stats.totalOrders}</p>
+              </div>
+           </div>
             <div>
               <h3 className="text-xl font-semibold">Total Orders</h3>
-              <p className="text-lg">{stats.totalOrders}</p>
+              <p className="text-lg">{ Object.values(orderStatus).reduce((acc, val) => acc + val, 0)}</p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex items-center">

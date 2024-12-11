@@ -37,7 +37,7 @@ const Home = () => {
 
       {/* Show all products */}
       <ShowAllProducts />
-      {console.log(productCategroy)}
+      {/* {console.log(productCategroy)} */}
     </div>
   );
 };
