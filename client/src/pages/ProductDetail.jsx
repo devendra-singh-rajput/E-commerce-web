@@ -61,9 +61,7 @@ const ProductDetail = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchProductDetails();
-  // }, [params]);
+  
 
   useEffect(() => {
     // Scroll to the top of the page

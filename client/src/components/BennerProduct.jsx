@@ -4,31 +4,29 @@ import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 import summmryApi from '../common';
 import axios from "axios";
 
-const desktopImages = [];
-const mobileImages = [];
-
-
-const getBanners = async () => {
-  try {
-    const { data } = await axios.get(summmryApi.getCustomization.url, {
-      withCredentials: true,
-    });
-    if (data.banners.desktop||data.banners.mobile) {
-
-      desktopImages.push(...(data.banners.desktop || []));
-      mobileImages.push(...(data.banners.mobile || []));
-    }
-  } catch (error) {
-    console.error("Failed to fetch Banners:", error);
-  }
-};
-
 const BennerProduct = () => {
+  const [desktopImages, setDesktopImages] = useState([]);
+  const [mobileImages, setMobileImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  
+
+  const getBanners = async () => {
+    try {
+      const { data } = await axios.get(summmryApi.getCustomization.url, {
+        withCredentials: true,
+      });
+      if (data.banners.desktop || data.banners.mobile) {
+        setDesktopImages(data.banners.desktop || []);
+        setMobileImages(data.banners.mobile || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch Banners:", error);
+    }
+  };
+
   useEffect(() => {
     getBanners();
+
     // Detect screen size
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768); // Assuming 768px is mobile size
@@ -37,16 +35,26 @@ const BennerProduct = () => {
     handleResize(); // Initialize screen size
     window.addEventListener('resize', handleResize);
 
-    // Auto slide change every 3 seconds
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % (isMobile ? mobileImages.length : desktopImages.length));
-    }, 3000);
-
     return () => {
       window.removeEventListener('resize', handleResize);
-      clearInterval(interval);
     };
-  }, [isMobile]);
+  }, []);
+
+  useEffect(() => {
+    // Auto slide change every 3 seconds
+    const images = isMobile ? mobileImages : desktopImages;
+    if (images.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [isMobile, mobileImages, desktopImages]);
+
+  useEffect(() => {
+    // Reset index when the image array changes
+    setCurrentIndex(0);
+  }, [isMobile, mobileImages, desktopImages]);
 
   const goToSlide = (index) => {
     setCurrentIndex(index);
@@ -57,8 +65,9 @@ const BennerProduct = () => {
   return (
     <div className="relative w-full overflow-hidden">
       {/* Carousel Image */}
-      <div className="w-full h-72 sm:h-74 flex transition-transform duration-700 ease-in-out"
-        style={{ transform: `translateX(-${currentIndex  * 100}%)` }}
+      <div
+        className="w-full h-72 sm:h-74 flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {images.map((src, index) => (
           <img
@@ -74,13 +83,17 @@ const BennerProduct = () => {
       {/* Navigation buttons */}
       <button
         className="hidden md:block absolute top-1/2 left-4 transform -translate-y-1/2 text-white text-3xl bg-black bg-opacity-20 p-2 rounded-full"
-        onClick={() => setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length)}
+        onClick={() =>
+          setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length)
+        }
       >
         <FaAngleLeft />
       </button>
       <button
         className="hidden md:block absolute top-1/2 right-4 transform -translate-y-1/2 text-white text-3xl bg-black bg-opacity-20 p-2 rounded-full"
-        onClick={() => setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)}
+        onClick={() =>
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
+        }
       >
         <FaAngleRight />
       </button>
