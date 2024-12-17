@@ -32,16 +32,16 @@ const Footer = () => {
           <div>
             <h2 className="text-xl font-bold mb-4">Follow Us</h2>
             <div className="flex space-x-4">
-              <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noreferrer" className="hover:text-slate-400">
+              <a href="https://www.facebook.com/profile.php?id=100027148873883" aria-label="Facebook" target="_blank" rel="noreferrer" className="hover:text-slate-400">
                 <FaFacebookF size={24} />
               </a>
               <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noreferrer" className="hover:text-slate-400">
                 <FaTwitter size={24} />
               </a>
-              <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noreferrer" className="hover:text-slate-400">
+              <a href="https://www.instagram.com/21___d.d.banna___/" aria-label="Instagram" target="_blank" rel="noreferrer" className="hover:text-slate-400">
                 <FaInstagram size={24} />
               </a>
-              <a href="https://linkedin.com" aria-label="LinkedIn" target="_blank" rel="noreferrer" className="hover:text-slate-400">
+              <a href="https://www.linkedin.com/in/devendra-singh-rajput/" aria-label="LinkedIn" target="_blank" rel="noreferrer" className="hover:text-slate-400">
                 <FaLinkedinIn size={24} />
               </a>
             </div>
