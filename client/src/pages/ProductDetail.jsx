@@ -11,6 +11,8 @@ import Context from '../context';
 import addToCart from '../helpers/addToCart';
 import ShowAllProducts from '../components/ShowAllProducts';
 import scrollTop from '../helpers/scrollTop';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 const ProductDetail = () => {
   // Initialize state variables
   const [data, setData] = useState({
@@ -30,12 +32,21 @@ const ProductDetail = () => {
   const [zoomImageCoordinate, setZoomImageCoordinate] = useState({ x: 0, y: 0 })
   const [zoomImages,setZoomImages]=useState(false)
   const { userAddToCart } = useContext(Context);
+  const user = useSelector(state => state?.user?.user)
   
   const handleAddToCart = (e, _id) => {
     e.stopPropagation();
     addToCart(e, _id);
     userAddToCart();
   };
+
+  const handleCheckout = (e) => {
+    if (!user) {
+      e.preventDefault();
+      toast.warn('Please login first...!');
+    }
+  };
+
 
   // Function to fetch product details
   const fetchProductDetails = async () => {
@@ -193,7 +204,7 @@ const leaveZoomImage=()=>{
                 <p className='text-slate-500 line-through text-lg'>{INRcurrency(data.price)}</p>
               </div>
               <div className='flex items-start gap-5 my-2'>
-                <Link to={`/CheckoutPage/${data?._id}`} className='border-2 border-primary py-1 justify-center flex items-center gap-1 text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium min-w-[120px]'><BsBagHeartFill className='text-lg' />BUY</Link>
+                <Link to={`/CheckoutPage/${data?._id}`} className='border-2 border-primary py-1 justify-center flex items-center gap-1 text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium min-w-[120px]'onClick={handleCheckout}><BsBagHeartFill className='text-lg' />BUY</Link>
                 <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium flex items-center gap-1  py-1 min-w-[130px]'onClick={(e)=>handleAddToCart(e,data?._id)} > <FaCartArrowDown className='text-lg'
                   />ADD TO CART</button>
               </div>
