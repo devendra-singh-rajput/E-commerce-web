@@ -114,6 +114,18 @@ const summmryApi={
         url:`${backendDomin}/api/getDashboardData`,
         method:"get"
     },
+    sendOtp:{
+        url:`${backendDomin}/api/sendOtp`,
+        method:"post"
+    },
+    verifyOtp:{
+        url:`${backendDomin}/api/verifyOtp`,
+        method:"post"
+    },
+    resetPassword:{
+        url:`${backendDomin}/api/resetPassword`,
+        method:"post"
+    },
 }
  export default summmryApi
  

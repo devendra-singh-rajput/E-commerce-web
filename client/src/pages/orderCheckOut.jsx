@@ -143,7 +143,6 @@ const CheckoutPage = () => {
 
       if (result.success) {
         toast.success(result.message)
-        console.log("Order placed successfully");
         setLoading(false)
 
       }else{

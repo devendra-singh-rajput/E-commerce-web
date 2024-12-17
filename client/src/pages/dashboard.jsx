@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line, Bar, Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, BarElement } from 'chart.js';
-import { FaShoppingCart, FaUsers, FaBoxOpen, FaChartLine } from 'react-icons/fa';
+import { FaShoppingCart, FaUsers, FaBoxOpen, FaChartLine, FaSpinner } from 'react-icons/fa';
 import axios from 'axios';
 import summmryApi from '../common';
 
@@ -42,9 +42,13 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  }
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <FaSpinner className="animate-spin text-4xl text-primary" />
+        <p className="ml-3 text-xl text-primary font-medium">Loading Graphs...</p>
+      </div>
+    );
 
   // Chart Data
   const salesData = {

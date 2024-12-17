@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import UploadProducts from '../components/UploadProducts';
 import summmryApi from '../common';
 import AdminProductCard from '../components/adminProductCard'; // Updated import
+import { FaSpinner } from 'react-icons/fa';
 
 const AllProducts = () => {
   const [openUploadProduct, setOpenUploadProduct] = useState(false);
@@ -40,7 +41,14 @@ const AllProducts = () => {
         </button>
       </div>
 
-      {loading && <p className="text-center">Loading products...</p>}
+    
+ {  (loading)&&(
+    
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <FaSpinner className="animate-spin text-4xl text-primary" />
+        <p className="ml-3 text-xl text-primary font-medium">Loading products...</p>
+      </div>)
+    }
       {error && <p className='text-red-500 text-center'>{error}</p>}
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-3 h-[calc(100vh-190px)] overflow-y-scroll">

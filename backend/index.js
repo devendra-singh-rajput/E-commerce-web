@@ -3,9 +3,9 @@ const cors = require('cors');
 const connectDb = require('./config/Db');
 const router=require('./routs/index')
 const cookieParser = require('cookie-parser')
-
-require('dotenv').config();
-
+const dotenv=require('dotenv')
+dotenv.config();
+ 
 const url=process.env.FRONEND_URL|| process.env.FRONEND_URL_LOCAL
 const app = express();
 app.use(cors({

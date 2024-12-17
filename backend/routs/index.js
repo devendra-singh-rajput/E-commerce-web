@@ -30,11 +30,16 @@ const { getOrderHistory } = require('../controllers/order/orderHistory')
 const { getAllOrders, updateOrder } = require('../controllers/order/getAllOrders')
 const { updatedCustomization, getCustomizations } = require('../controllers/user/customizetion')
 const { getDashboardData } = require('../controllers/user/getDashboardData')
+const { verifyOtp, resetPassword, sendOtp } = require('../controllers/user/ForgotPassword')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
 router.get("/user",authToken,userDetailController)
 router.get("/userLogout",userLogout)
+router.post('/sendOtp',sendOtp)
+router.post('/verifyOtp',verifyOtp)
+router.post('/resetPassword',resetPassword)
+
 //admin penal
 router.get("/all-user",authToken,AllUser)
 router.put("/updateUser",authToken,updateUser)
