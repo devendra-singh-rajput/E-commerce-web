@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import ProductCategoryList from "../components/ProductCategoryList";
 import BennerProduct from "../components/BennerProduct";
 import HorizontalProductCard from "../components/HorizontalProductCard";
-import VerticalProductCard from "../components/VerticalProductCard";
+import VerticalProductCard from "../components/verticalProductCard";
 import ShowAllProducts from "../components/ShowAllProducts";
 import { productCategroy, updateProductCategories } from "../helpers/productCategory";
 
