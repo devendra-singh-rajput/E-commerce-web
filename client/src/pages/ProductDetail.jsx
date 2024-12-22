@@ -6,7 +6,7 @@ import { IoIosStar } from "react-icons/io";
 import INRcurrency from '../helpers/displayCurrency';
 import { FaCartArrowDown } from "react-icons/fa";
 import { BsBagHeartFill } from "react-icons/bs";
-import CategoryProductvertical from '../components/categoryProductvertical';
+import CategoryProductvertical from '../components/CategoryProductvertical';
 import Context from '../context';
 import addToCart from '../helpers/addToCart';
 import ShowAllProducts from '../components/ShowAllProducts';
