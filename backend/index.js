@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const dotenv=require('dotenv')
 dotenv.config();
  
-const url=process.env.FRONEND_URL|| process.env.FRONEND_URL_LOCAL
+const url=process.env.FRONTEND_URL
 const app = express();
 app.use(cors({
    origin:url,

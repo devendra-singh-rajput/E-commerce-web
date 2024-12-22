@@ -12,7 +12,7 @@ const updateUser = require('../controllers/user/updateUser')
 
 const getProducts = require('../controllers/products/getProducts')
 const updateProduct = require('../controllers/products/EditProduct')
-const uploadProduct = require('../controllers/products/uploadProduct')
+const uploadProduct = require('../controllers/products/UploadProduct')
 const deleteProduct = require('../controllers/products/deleteProduct')
 const productCategory = require('../controllers/products/productCategory')
 const productCategoryWise = require('../controllers/products/categoryWiseAllproduct')
