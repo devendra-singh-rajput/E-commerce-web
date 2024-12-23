@@ -3,7 +3,7 @@ const productModel = require('../../models/ProductModel');
 const userModel = require('../../models/UserModel');
 
 const placeOrder = async (req, res) => {
-  const { productId, quantity, productImage,productName,shippingCharge, tax, price, totalAmount, userData, otp, paymentMethod } = req.body;
+  const { productId, quantity, productImage,productName,shippingCharge,paymentStatus, tax, price, totalAmount, userData, otp, paymentMethod } = req.body;
   const userId = req.userId;
 
   try {
@@ -36,7 +36,7 @@ const placeOrder = async (req, res) => {
       deliveryOption: paymentMethod,
       userDetail: userData,
       status: "Pending",
-      paymentStatus: "Unpaid",
+      paymentStatus: paymentStatus,
       shippingCharge:shippingCharge
     };
 
