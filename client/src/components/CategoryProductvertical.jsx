@@ -45,10 +45,10 @@ const CategoryProductvertical = ({ category, heading }) => {
   }, 20000); // 20000 ms = 20 seconds
 
   return (
-    <div className="container mx-auto px-3 my-4 w-full max-w-[1600px] bg-white">
+    <div className="container mx-auto px-3 my-4 w-full max-w-[1600px] bg-slate-100">
       <h2 className="text-2xl font-semibold px-3 py-4 capitalize">{heading}</h2>
 
-      <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,320px))] justify-between md:gap-6 overflow-x-scroll scrollbar-none'>
+      <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,320px))] justify-between gap-6 overflow-x-scroll scrollbar-none'>
         {loading ? (
           loadingList.map((product, index) => (
             <div

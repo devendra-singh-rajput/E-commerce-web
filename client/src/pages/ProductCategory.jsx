@@ -66,7 +66,7 @@ const ProductCategory = () => {
       {/* Desktop version */}
       <div className='grid lg:grid-cols-[240px,1fr] gap-4'>
         {/* Left side filter panel */}
-        <div className='bg-white p-4 min-h-[calc(100vh-120px)] overflow-y-scroll min-w-fit'>
+        <div className='bg-white p-4 md:min-h-[calc(100vh-120px)] overflow-y-scroll min-w-fit'>
           <h3 className='text-lg  uppercase text-slate-500 font-medium border-b pb-1 border-slate-300'>
             Sort By
           </h3>

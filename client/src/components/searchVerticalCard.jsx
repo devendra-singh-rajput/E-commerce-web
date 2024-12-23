@@ -17,7 +17,7 @@ const SearchVerticalCard = ({ loading, data = [] }) => {
 
   return (
     <div>
-      <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,300px))] justify-center md:justify-between md:gap-4 overflow-x-scroll scrollbar-none'>
+      <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,300px))] justify-center md:justify-between gap-4 overflow-x-scroll scrollbar-none'>
         {loading ? (
           loadingList.map((_, index) => (
             <div
