@@ -31,6 +31,7 @@ const { getAllOrders, updateOrder } = require('../controllers/order/getAllOrders
 const { updatedCustomization, getCustomizations } = require('../controllers/user/customizetion')
 const { getDashboardData } = require('../controllers/user/getDashboardData')
 const { verifyOtp, resetPassword, sendOtp } = require('../controllers/user/ForgotPassword')
+const { createOrder, verifyPayment } = require('../controllers/order/orderPayment')
 
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
@@ -70,6 +71,8 @@ router.post("/placeOrder",authToken,placeOrder)
 router.get("/getOrderHistory",authToken,getOrderHistory)
 router.get("/getAllOrders",authToken,getAllOrders)
 router.put("/updateOrder",authToken,updateOrder)
+router.post('/createOrder',authToken,createOrder)
+router.post('/verifyPayment',authToken,verifyPayment)
 
 
 module.exports=router

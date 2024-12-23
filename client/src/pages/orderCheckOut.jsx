@@ -10,15 +10,15 @@ const CheckoutPage = () => {
   const user = useSelector(state => state?.user?.user)
   const [productData, setProductData] = useState(null);
   const [userData, setUserData] = useState({
-    name: user.userDetail?.name || '',
-    email: user.email || '',
-    pincode: user.userDetail?.pincode || '',
-    landmark: user.userDetail?.landmark || '',
-    address: user.userDetail?.address || '',
-    city: user.userDetail?.city || '',
-    state: user.userDetail?.state || '',
-    phoneNumber: user.userDetail?.phoneNumber || '',
-    alternatePhoneNumber: user.userDetail?.alternatePhoneNumber || ''
+    name: user?.userDetail?.name || '',
+    email: user?.email || '',
+    pincode: user?.userDetail?.pincode || '',
+    landmark: user?.userDetail?.landmark || '',
+    address: user?.userDetail?.address || '',
+    city: user?.userDetail?.city || '',
+    state: user?.userDetail?.state || '',
+    phoneNumber: user?.userDetail?.phoneNumber || '',
+    alternatePhoneNumber: user?.userDetail?.alternatePhoneNumber || ''
   });
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -33,6 +33,7 @@ const CheckoutPage = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("COD");
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
+  const [paymentStatus,setPaymentStatus]= useState("");
 
 
 
@@ -113,7 +114,64 @@ const CheckoutPage = () => {
   //   }
   // };
 
-  const handlePlaceOrder = async () => {
+
+  const handleRazorpayPayment = async () => {
+    const response = await fetch(summmryApi.createOrder.url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: totalAmount * 100, // Razorpay expects amount in paise
+        currency: "INR",
+      }),
+    });
+    const orderData = await response.json();
+
+    const options = {
+      key: "YOUR_RAZORPAY_KEY_ID",
+      amount: orderData.amount,
+      currency: "INR",
+      name: "TechnoWorld",
+      description: "Order Payment",
+      // image: "/your-logo.png", // Add your logo URL
+      // theme: {
+      //   color: "#ff5722", // Match your theme color
+      // },
+      order_id: orderData.id,
+      handler: async (response) => {
+        try {
+          const paymentVerification = await fetch(summmryApi.verifyPayment.url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(response),
+          });
+
+          const result = await paymentVerification.json();
+          if (result.success) {
+            toast.success("Payment Successful!");
+            handleOrderCreation("Paid");
+          } else {
+            toast.error("Payment verification failed!");
+          }
+        } catch (error) {
+          console.error("Payment verification error:", error);
+        }
+      },
+      prefill: {
+        name: userData.name,
+        email: userData.email,
+        contact: userData.phoneNumber,
+      },
+    };
+
+    const razorpay = new Razorpay(options);
+    razorpay.open();
+  };
+
+
+
+
+  //cod order method 
+  const handleOrderCreation = async (paymentStatus) => {
     if (!validateInput()) {
       alert("Please correct the errors before placing an order.");
       return;
@@ -135,6 +193,7 @@ const CheckoutPage = () => {
           totalAmount,
           userData,
           otp,
+          paymentStatus,
           paymentMethod: selectedPaymentMethod,
         }),
       });
@@ -169,6 +228,18 @@ const CheckoutPage = () => {
   }
 
   const DiscountPercentage = ((productData?.price - productData?.sellingPrice) / productData?.price) * 100;
+
+
+  const handlePlaceOrder = () => {
+    if (selectedPaymentMethod === "Card") {
+      handleRazorpayPayment();
+    } else {
+      handleOrderCreation("COD");
+    }
+  };
+
+
+
 
   return (
     <div className="container mx-auto p-4 lg:flex lg:justify-between">
@@ -215,8 +286,9 @@ const CheckoutPage = () => {
               onChange={(e) => setSelectedPaymentMethod(e.target.value)} className="mr-2" /> Cash on Delivery
           </label>
           <label className="flex items-center">
-            <input type="radio"required name="payment" disabled   value="Card"
-              checked={selectedPaymentMethod === "Card"}
+            <input type="radio"required name="payment"
+            //  disabled 
+               value="Card"checked={selectedPaymentMethod === "Card"}
               onChange={(e) => setSelectedPaymentMethod(e.target.value)} className="mr-2" /> Credit / Debit Card / UPI
           </label>
         </section>

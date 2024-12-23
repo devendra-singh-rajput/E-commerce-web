@@ -126,6 +126,13 @@ const summmryApi={
         url:`${backendDomin}/api/resetPassword`,
         method:"post"
     },
+    createOrder:{
+        url:`${backendDomin}/api/createOrder`,
+        method:"post"
+    },verifyPayment:{
+        url:`${backendDomin}/api/verifyPayment`,
+        method:"post"
+    },
 }
  export default summmryApi
  
