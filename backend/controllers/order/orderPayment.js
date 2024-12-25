@@ -12,7 +12,11 @@ const razorpay = new Razorpay({
       res.json(order);
     } catch (error) {
       console.error("Error creating order:", error);
-      res.status(500).send("Error creating order");
+      res.status(500).json({
+      success: false,
+      message: "Error creating order",
+      error: error.message,
+    });
     }
   }
   

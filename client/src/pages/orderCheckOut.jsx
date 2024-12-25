@@ -118,12 +118,14 @@ const CheckoutPage = () => {
   const handleRazorpayPayment = async () => {
     const response = await fetch(summmryApi.createOrder.url, {
       method: "POST",
+      credentials: 'include',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         amount: totalAmount * 100, // Razorpay expects amount in paise
         currency: "INR",
       }),
     });
+    
     const orderData = await response.json();
 
     const options = {
@@ -141,6 +143,7 @@ const CheckoutPage = () => {
         try {
           const paymentVerification = await fetch(summmryApi.verifyPayment.url, {
             method: "POST",
+            credentials: 'include',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(response),
           });
