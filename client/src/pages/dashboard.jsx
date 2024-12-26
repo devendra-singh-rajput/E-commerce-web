@@ -152,9 +152,9 @@ const Dashboard = () => {
         </div>
 
         {/* Graphs */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
   {/* Line Chart: Sales by Day */}
-  <div className="bg-white p-4 rounded-lg shadow-md mb-6 h-[410px]">
+  <div className="bg-white p-4 rounded-lg shadow-md mb-6 ">
     <h3 className="text-xl font-semibold mb-4">Total Sales by Day</h3>
     <Line 
       data={salesData} 
@@ -176,7 +176,7 @@ const Dashboard = () => {
   </div>
 
   {/* Bar Chart: Revenue by Category */}
-  <div className="bg-white p-4 rounded-lg shadow-md mb-6 h-[410px]">
+  <div className="bg-white p-4 rounded-lg shadow-md mb-6 ">
     <h3 className="text-xl font-semibold mb-4">Revenue by Category</h3>
     <Bar 
       data={categorySalesData} 
