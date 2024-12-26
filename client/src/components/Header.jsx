@@ -98,7 +98,7 @@ const Header = () => {
         </div>
 
         {
-          <div className="lg:hidden py-2 flex items-center border-t">
+          <div className="lg:hidden py-2 flex items-center">
             <button onClick={toggleSearch} className='text-2xl '>
             <IoSearchSharp />
           </button>

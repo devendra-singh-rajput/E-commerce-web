@@ -7,10 +7,12 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
+// Create Order
 const createOrder = async (req, res) => {
   const { amount, currency } = req.body;
+
   try {
-    // Input Validation
+    // Validate input
     if (!amount || typeof amount !== "number" || amount <= 0) {
       return res.status(400).json({ success: false, message: "Invalid amount" });
     }
@@ -20,7 +22,7 @@ const createOrder = async (req, res) => {
 
     // Create Razorpay Order
     const order = await razorpay.orders.create({
-      amount: amount * 100, // Razorpay expects amount in paise
+      amount: amount * 100, // Convert amount to paise
       currency,
     });
 
@@ -35,20 +37,28 @@ const createOrder = async (req, res) => {
   }
 };
 
+// Verify Payment
 const verifyPayment = (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
-  // Generate Signature
-  const generated_signature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-    .update(razorpay_order_id + "|" + razorpay_payment_id)
-    .digest("hex");
+  try {
+    const generated_signature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(razorpay_order_id + "|" + razorpay_payment_id)
+      .digest("hex");
 
-  // Compare Signatures
-  if (generated_signature === razorpay_signature) {
-    res.status(200).json({ success: true, message: "Payment verified successfully" });
-  } else {
-    res.status(400).json({ success: false, message: "Payment verification failed" });
+    if (generated_signature === razorpay_signature) {
+      res.status(200).json({ success: true, message: "Payment verified successfully" });
+    } else {
+      res.status(400).json({ success: false, message: "Payment verification failed" });
+    }
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error verifying payment",
+      error: error.message,
+    });
   }
 };
 

@@ -116,58 +116,66 @@ const CheckoutPage = () => {
 
 
   const handleRazorpayPayment = async () => {
-    const response = await fetch(summmryApi.createOrder.url, {
-      method: "POST",
-      credentials: 'include',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount: totalAmount * 100, // Razorpay expects amount in paise
-        currency: "INR",
-      }),
-    });
-    
-    const orderData = await response.json();
+    try {
+      // Create Order
+      const response = await fetch(summmryApi.createOrder.url, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: totalAmount, // Amount in rupees
+          currency: "INR",
+        }),
+      });
 
-    const options = {
-      key: "rzp_test_bUdMiy5zlXHAYF",
-      amount: orderData.amount,
-      currency: "INR",
-      name: "TechnoWorld",
-      description: "Order Payment",
-      // image: "/your-logo.png", // Add your logo URL
-      theme: {
-        color: "#dc2626", // Match your theme color
-      },
-      order_id: orderData.id,
-      handler: async (response) => {
-        try {
-          const paymentVerification = await fetch(summmryApi.verifyPayment.url, {
-            method: "POST",
-            credentials: 'include',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(response),
-          });
+      const { order } = await response.json();
+      
+      const options = {
+        key: 'rzp_test_bUdMiy5zlXHAYF',
+        amount: order.amount,
+        currency: order.currency,
+        name: "TechnoWorld",
+        description: "Order Payment",
+        order_id: order.id,
+        handler: async (response) => {
+          try {
+            // Verify Payment
+            const verificationResponse = await fetch(summmryApi.verifyPayment.url, {
+              method: "POST",
+              credentials: "include",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(response),
+            });
 
-          const result = await paymentVerification.json();
-          if (result.success) {
-            toast.success("Payment Successful!");
-            handleOrderCreation("Paid");
-          } else {
-            toast.error("Payment verification failed!");
+            const result = await verificationResponse.json();
+
+            if (result.success) {
+              toast.success("Payment Successful!");
+              handleOrderCreation("Paid");
+            } else {
+              toast.error("Payment verification failed!");
+            }
+          } catch (error) {
+            console.error("Payment verification error:", error);
+            toast.error("Error verifying payment.");
           }
-        } catch (error) {
-          console.error("Payment verification error:", error);
-        }
-      },
-      prefill: {
-        name: userData.name,
-        email: userData.email,
-        contact: userData.phoneNumber,
-      },
-    };
+        },
+        prefill: {
+          name: userData.name,
+          email: userData.email,
+          contact: userData.phoneNumber,
+        },
+        theme: {
+          color: "#dc2626",
+        },
+      };
 
-    const razorpay = new Razorpay(options);
-    razorpay.open();
+      const razorpay = new Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.error("Error in Razorpay payment:", error);
+      toast.error("Error initiating payment.");
+    }
   };
 
 
