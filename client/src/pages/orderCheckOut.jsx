@@ -129,15 +129,15 @@ const CheckoutPage = () => {
     const orderData = await response.json();
 
     const options = {
-      key: "YOUR_RAZORPAY_KEY_ID",
+      key: "rzp_test_bUdMiy5zlXHAYF",
       amount: orderData.amount,
       currency: "INR",
       name: "TechnoWorld",
       description: "Order Payment",
       // image: "/your-logo.png", // Add your logo URL
-      // theme: {
-      //   color: "#ff5722", // Match your theme color
-      // },
+      theme: {
+        color: "#dc2626", // Match your theme color
+      },
       order_id: orderData.id,
       handler: async (response) => {
         try {
@@ -291,6 +291,7 @@ const CheckoutPage = () => {
           <label className="flex items-center">
             <input type="radio"required name="payment"
             //  disabled 
+            
                value="Card"checked={selectedPaymentMethod === "Card"}
               onChange={(e) => setSelectedPaymentMethod(e.target.value)} className="mr-2" /> Credit / Debit Card / UPI
           </label>
