@@ -77,7 +77,7 @@ const AllOrders = () => {
 
   return (
     <div className="p-1 bg-gray-100 min-h-screen">
-       <div className="bg-white py-4 px-4 flex justify-between items-center shadow-md mb-4 ">
+      <div className="bg-white py-4 px-4 flex justify-between items-center shadow-md mb-4 ">
         <h1 className='font-bold text-lg'>Manage Orders</h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-[calc(100vh-190px)] overflow-y-scroll ">
@@ -96,15 +96,14 @@ const AllOrders = () => {
                   <p className="text-sm mt-2">
                     <strong>Status:</strong>{" "}
                     <span
-                      className={`px-2 py-1 rounded text-white ${
-                        order.status === "Pending"
+                      className={`px-2 py-1 rounded text-white ${order.status === "Pending"
                           ? "bg-yellow-500"
                           : order.status === "Shipped"
-                          ? "bg-blue-500"
-                          : order.status === "Cancelled"
-                          ? "bg-red-500"
-                          : "bg-green-500"
-                      }`}
+                            ? "bg-blue-500"
+                            : order.status === "Cancelled"
+                              ? "bg-red-500"
+                              : "bg-green-500"
+                        }`}
                     >
                       {order.status}
                     </span>
@@ -133,7 +132,7 @@ const AllOrders = () => {
                         <img
                           src={product.productImage}
                           alt={product.productName}
-                          className="w-8 h-8 rounded object-cover mr-2"
+                          className="w-8 h-8 rounded object-contain mr-2"
                         />
                         <div>
                           <p className="font-medium">{product.productName}</p>
@@ -154,15 +153,21 @@ const AllOrders = () => {
                         updateOrder(parentOrder._id, order._id, { paymentStatus: e.target.value })
                       }
                       className="bg-gray-200 border rounded p-1 text-xs w-40"
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Paid">Paid</option>
-                      <option value="Failed">Failed</option>
+                      disabled={order.status === "Cancelled"}
+                    >{
+                        order.status === "Cancelled" ?
+                          <option value="">--</option>
+                          :
+                          (<><option value="Pending">Pending</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Failed">Failed</option></>)
+                      }
+
                     </select>
                   </p>
                   <p className="text-xs mb-2 flex justify-between">
                     <strong>Shipping Charges:</strong>{" "}
-                    <input disabled 
+                    <input disabled
                       type="number"
                       placeholder="default 50+ more"
                       value={order.shippingCharge || ""}
@@ -188,6 +193,8 @@ const AllOrders = () => {
                       }
                       className="bg-gray-200 border rounded p-1 text-xs w-40"
                       readOnly={order.status === "Cancelled"}
+                      disabled={order.status === "Cancelled"}
+                      min={new Date().toISOString().split("T")[0]}
                     />
                   </p>
                   <div className="flex justify-between">
@@ -197,12 +204,14 @@ const AllOrders = () => {
                           status: order.status === "Shipped" ? "Delivered" : "Shipped",
                         })
                       }
-                      className={`${
-                        order.status === "Shipped" ? "bg-green-600" : "bg-blue-600"
-                      } text-white px-3 py-1 rounded hover:opacity-90`}
+                      disabled={order.status === "Delivered"}
+                      className={`${order.status === "Shipped" || order.status === "Delivered" ? "bg-green-600" : "bg-blue-600"
+                        } text-white px-3 py-1 rounded hover:opacity-90 ${order.status === "Delivered" ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                     >
-                      {order.status === "Shipped" ? "Mark as Delivered" : "Mark as Shipped"}
+                      {order.status === "Shipped" ? "Mark as Delivered" : (order.status === "Delivered" ? "Delivered" : "Mark as Shipped")}
                     </button>
+
                     <button
                       onClick={() =>
                         updateOrder(parentOrder._id, order._id, {
@@ -210,10 +219,13 @@ const AllOrders = () => {
                           expectedDelivery: "Your order has been canceled.",
                         })
                       }
-                      className="px-3 py-1 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded"
+                      disabled={order.status === "Delivered"}
+                      className={`px-3 py-1 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded ${order.status === "Delivered" ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                     >
                       Cancel Order
                     </button>
+
                   </div>
                 </div>
               </div>

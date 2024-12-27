@@ -8,7 +8,7 @@ exports.getAllOrders = async (req, res) => {
   if (uploadProductPermission(req.userId)) {
     try {
       // Fetch all orders
-      const orders = await Order.find(); 
+      const orders = await Order.find().sort({ createdAt: -1 });
       res.status(200).json({ success: true, data: orders });
     } catch (error) {
       console.error("Error fetching orders:", error);
