@@ -51,7 +51,7 @@ const AllProducts = () => {
     }
       {error && <p className='text-red-500 text-center'>{error}</p>}
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-3 h-[calc(100vh-190px)] overflow-y-scroll">
+      <div className="grid place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-3 h-[calc(100vh-190px)] overflow-y-scroll">
       {/* //flex wrap */}
         {allProducts.map((product) => (
           <AdminProductCard data={product} key={product._id} fetchData={fetchAllProducts}/>  

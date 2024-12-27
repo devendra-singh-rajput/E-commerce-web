@@ -22,7 +22,7 @@ const CheckoutPage = () => {
   });
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [mobileNumber, setMobileNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({})
   const [quantity, setQuantity] = useState(1);
@@ -59,7 +59,7 @@ const CheckoutPage = () => {
     };
     fetchProductDetails();
   }, [productId]);
-  // setMobileNumber(userData.phoneNumber)
+  // setPhoneNumber(userData.phoneNumber)
   useEffect(() => {
     if (productData) {
       const productPrice = productData.sellingPrice * quantity;
@@ -82,7 +82,7 @@ const CheckoutPage = () => {
     if (!userData.city) newErrors.city = "City is required";
     if (!userData.address) newErrors.address = "Address is required";
     if (!userData.state) newErrors.state = "State is required";
-    if (userData.mobileNumber &&!mobilePattern.test(mobileNumber)) newErrors.mobileNumber = "Enter a valid 10-digit mobile number";
+    if (!userData.phoneNumber &&!mobilePattern.test(userData.phoneNumber)) newErrors.phoneNumber = "Enter a valid 10-digit mobile number";
     if (userData.alternatePhoneNumber && !mobilePattern.test(userData.alternatePhoneNumber)) newErrors.alternatePhoneNumber = "Alternate phone number should be 10 digits";
     if (!otp && otpSent) newErrors.otp = "OTP is required after it's sent";
     if (!selectedPaymentMethod) newErrors.paymentMethod = "Please select a payment method";
@@ -92,7 +92,7 @@ const CheckoutPage = () => {
   };
 
   // const handleSendOtp = async () => {
-  //   if (!mobileNumber || errors.mobileNumber) {
+  //   if (!phoneNumber || errors.phoneNumber) {
   //     alert("Please enter a valid 10-digit mobile number to receive OTP.");
   //     return;
   //   }
@@ -102,7 +102,7 @@ const CheckoutPage = () => {
   //       method: summmryApi.sendSMS.method,
   //       credentials:"include",
   //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ mobileNumber }),
+  //       body: JSON.stringify({ phoneNumber }),
   //     });
   //     const result = await response.json();
   //     setOtp(result.data)
@@ -117,6 +117,11 @@ const CheckoutPage = () => {
 
   const handleRazorpayPayment = async () => {
     try {
+
+      if (!validateInput()) {
+        alert("Please correct the errors before placing an order.");
+        return;
+      }
       // Create Order
       const response = await fetch(summmryApi.createOrder.url, {
         method: "POST",
@@ -272,7 +277,7 @@ const CheckoutPage = () => {
             <input type="text"required name="state" placeholder="State" value={userData.state} onChange={handleAddressChange}  className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full" />
             {errors.state && <p className="text-red-500">{errors.state}</p>}
             <input
-              type="text"name="alternatePhoneNumber"placeholder="Alternate Phone Number"value={userData.alternatePhoneNumber}onChange={handleAddressChange}
+              type="number"name="alternatePhoneNumber"placeholder="Alternate Phone Number"value={userData.alternatePhoneNumber}onChange={handleAddressChange}
               className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md  p-2 rounded w-full"
             />
           {errors.alternatePhoneNumber && <p className="text-red-500">{errors.alternatePhoneNumber}</p>}
@@ -280,9 +285,9 @@ const CheckoutPage = () => {
         </section>
         <section>
           <h2 className="text-xl font-semibold mb-3">Mobile Verification</h2>
-          <input type="text"required placeholder="Enter Mobile Number"name="phoneNumber"  value={userData.phoneNumber}
+          <input type="number"required placeholder="Enter Mobile Number"name="phoneNumber"  value={userData.phoneNumber}
           onChange={handleAddressChange} className="border-slate-400 hover:border-primary border hover:bg-slate-100 hover:shadow-md mb-3 p-2 rounded w-full" />
-          {errors.mobileNumber && <p className="text-red-500">{errors.mobileNumber}</p>}
+          {errors.phoneNumber && <p className="text-red-500">{errors.phoneNumber}</p>}
           {/* {otpSent ? (
             <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} className="border p-2 rounded w-full" />
           ) : (

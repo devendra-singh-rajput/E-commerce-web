@@ -43,9 +43,9 @@ const AllUser = () => {
     return (
         <div>
             <div className="overflow-hidden">
-                <div className="overflow-y-auto h-[32rem]">
+                <div className="overflow-y-auto h-[40rem]">
                     <table className="w-full user-table">
-                        <thead className='sticky -top-1 bg-black text-white'>
+                        <thead className='sticky -top-1 bg-slate-500 text-white'>
                             <tr>
                                 <th>SrNo</th>
                                 <th>Name</th>

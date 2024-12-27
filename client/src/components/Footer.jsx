@@ -21,10 +21,10 @@ const Footer = () => {
           <div>
             <h2 className="text-xl font-bold mb-4">Customer Service</h2>
             <ul className="text-sm text-slate-400 space-y-2">
-              <li><a href="/help" className="hover:text-slate-200">Help & FAQs</a></li>
-              <li><a href="/returns" className="hover:text-slate-200">Returns & Refunds</a></li>
-              <li><a href="/shipping" className="hover:text-slate-200">Shipping Information</a></li>
-              <li><a href="/contact" className="hover:text-slate-200">Contact Us</a></li>
+              <li><a href="" className="hover:text-slate-200">Help & FAQs</a></li>
+              <li><a href="" className="hover:text-slate-200">Returns & Refunds</a></li>
+              <li><a href="" className="hover:text-slate-200">Shipping Information</a></li>
+              <li><a href="" className="hover:text-slate-200">Contact Us</a></li>
             </ul>
           </div>
 
@@ -59,7 +59,7 @@ const Footer = () => {
                 className="p-2 rounded bg-slate-700 text-slate-200 border border-slate-600 placeholder-slate-400 focus:outline-none"
               />
               <button
-                type="submit"
+                // type="submit"
                 className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
               >
                 Subscribe

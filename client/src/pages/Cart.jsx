@@ -73,7 +73,9 @@ const Cart = () => {
   };
 
   // Delete product from cart
-  const deleteCartProduct = async (productId) => {
+  const deleteCartProduct = async (e,productId) => {
+    e?.stopPropagation(); 
+    e?.preventDefault();
     try {
       const response = await fetch(summaryApi.deleteCartProduct.url, {
         method: summaryApi.deleteCartProduct.method,
@@ -147,7 +149,7 @@ const handelLoading = async () => {
                     <div className='absolute right-0'>
                       <div
                         className='p-2 text-ellipsis hover:text-white text-xl hover:bg-primary rounded-full cursor-pointer'
-                        onClick={() => deleteCartProduct(product.productId._id)}
+                        onClick={(e) => deleteCartProduct(e,product.productId._id)}
                       >
                         <MdDeleteForever />
                       </div>
