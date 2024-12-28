@@ -32,7 +32,9 @@ const { updatedCustomization, getCustomizations } = require('../controllers/user
 const { getDashboardData } = require('../controllers/user/getDashboardData')
 const { verifyOtp, resetPassword, sendOtp } = require('../controllers/user/ForgotPassword')
 const { createOrder, verifyPayment } = require('../controllers/order/orderPayment')
+const EditProfile = require('../controllers/user/EditProfile')
 
+//user
 router.post("/signup",signUpController)
 router.post("/signin",signInController)
 router.get("/user",authToken,userDetailController)
@@ -40,6 +42,7 @@ router.get("/userLogout",userLogout)
 router.post('/sendOtp',sendOtp)
 router.post('/verifyOtp',verifyOtp)
 router.post('/resetPassword',resetPassword)
+router.put('/EditProfile',authToken,EditProfile)
 
 //admin penal
 router.get("/all-user",authToken,AllUser)
@@ -73,6 +76,7 @@ router.get("/getAllOrders",authToken,getAllOrders)
 router.put("/updateOrder",authToken,updateOrder)
 router.post('/createOrder',authToken,createOrder)
 router.post('/verifyPayment',authToken,verifyPayment)
+
 
 
 module.exports=router

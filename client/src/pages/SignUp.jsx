@@ -100,15 +100,16 @@ const SignUp = () => {
                     <div className='w-20 h-20 mx-auto relative overflow-hidden rounded-full'>
                         <img src={data.profilePic || signin} alt="Profile" />
                         <label>
-                            <div className='text-xs bg-slate-200 bg-opacity-50 pb-5 cursor-pointer absolute bottom-0 w-full'>
-                                Upload Photo
+                            <div className='text-xs pb-5 h-full cursor-pointer absolute bottom-0 w-full'>
+                                
                             </div>
                             <input type="file" className='hidden' onChange={handleUploadPic} />
                         </label>
                     </div>
+                       <p className='text-xs flex justify-center font-semibold'> Upload Profile Photo</p>
                     <form onSubmit={handleSubmit} className='p-5 flex flex-col gap-2'>
                         <div className='grid'>
-                            <label>UserName:</label>
+                            <label>User Name:</label>
                             <div className='bg-slate-100 p-2'>
                                 <input type="text"
                                        name="userName"

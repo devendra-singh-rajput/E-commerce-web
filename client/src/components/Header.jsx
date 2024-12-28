@@ -110,8 +110,10 @@ const Header = () => {
             <Link to={'/admin-panel/Dashboard'} className='text-3xl cursor-pointer'>
               {user?.profilePic ? (
                 <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user?.name} />
-              ) : (
-                <FaRegUserCircle />
+              ) : (<Link to={'/EditProfile'}>
+              
+              <FaRegUserCircle />
+              </Link>
               )}
             </Link>
           )}

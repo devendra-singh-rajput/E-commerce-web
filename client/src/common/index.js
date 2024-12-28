@@ -1,5 +1,5 @@
-// const backendDomin ="http://localhost:8080"
-const backendDomin ="https://e-commerce-web-cxge.onrender.com"
+const backendDomin ="http://localhost:8080"
+// const backendDomin ="https://e-commerce-web-cxge.onrender.com"
 
 const summmryApi={
     signUp:{
@@ -132,6 +132,10 @@ const summmryApi={
     },verifyPayment:{
         url:`${backendDomin}/api/verifyPayment`,
         method:"post"
+    },
+    EditProfile:{
+        url:`${backendDomin}/api/EditProfile`,
+        method:"put"
     },
 }
  export default summmryApi

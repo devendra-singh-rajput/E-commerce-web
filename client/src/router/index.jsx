@@ -16,6 +16,7 @@ import OrderHistoryPage from "../pages/OrderHistoryPage";
 import AllOrders from "../pages/AllOrders";
 import CustomizationPage from "../pages/costomize";
 import Dashboard from "../pages/dashboard";
+import EditProfile from "../pages/EditProfile";
 
 const router = createBrowserRouter(
   [
@@ -62,6 +63,10 @@ const router = createBrowserRouter(
         {
           path: "CheckoutPage/:productId",
           element: <CheckoutPage />,
+        },
+        {
+          path: "EditProfile",
+          element: <EditProfile/>,
         },
         {
           path: "admin-panel",
