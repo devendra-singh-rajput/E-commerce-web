@@ -211,7 +211,7 @@ const handelLoading = async () => {
                 </p>
               </div>
               <div className='flex justify-evenly my-3'>
-                <button className='border-2 border-primary hover:bg-primary px-2 hover:text-white text-primary font-semibold rounded'>Payment</button>
+                {/* <button className='border-2 border-primary hover:bg-primary px-2 hover:text-white text-primary font-semibold rounded'>Payment</button> */}
                 
               <Link to={"/OrderHistoryPage"} className='border-2 border-primary font-semibold hover:bg-primary px-2 hover:text-white text-primary rounded'>OrderHistory</Link>
               </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import summmryApi from "../common";
 import INRcurrency from "../helpers/displayCurrency";
 import { toast } from 'react-toastify';
@@ -34,6 +34,7 @@ const CheckoutPage = () => {
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
   const [paymentStatus,setPaymentStatus]= useState("");
+  const navigate = useNavigate();
 
 
 
@@ -219,7 +220,8 @@ const CheckoutPage = () => {
       if (result.success) {
         toast.success(result.message)
         setLoading(false)
-
+        // productDetail/productId
+        navigate(`/productDetail/${productId}`);
       }else{
         toast.error(result.message)
       }

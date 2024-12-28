@@ -43,7 +43,7 @@ const Login = () => {
                 toast.success(dataApi.message,{autoClose: 1000});
                 navigate("/");
                 fetchUserDetail();
-                userAddToCart()
+                userAddToCart();
             } else {
                 toast.error(dataApi.message);
             }

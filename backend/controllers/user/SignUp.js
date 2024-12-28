@@ -1,48 +1,78 @@
 const userModel = require("../../models/UserModel");
-const bcrypt = require('bcryptjs');
-
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken"); // Make sure JWT is imported
 
 async function signUpController(req, res) {
-  const {name,email,password}=req.body
-  const user = await userModel.findOne({email});
-  if(user){
-   return res.status(400).send({
-     success:false,
-     message:"User Already exist.."
-
-   })
-  }
-
+  const { userName, email, password } = req.body;
 
   try {
-    if(!email&&!password&&!name){
-        throw new Error("please fill the detail properly!...")
-    } 
-    const salt = bcrypt.genSaltSync(10);
-    const hashPassword = await bcrypt.hashSync(password, salt);
-    if(!hashPassword){
-        throw new Error("hash password error!...")
+    // Validate input
+    if (!userName || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all the required fields.",
+      });
     }
-    const payload={
-        ...req.body,
+
+    // Check if user already exists
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists.",
+      });
+    }
+
+    // Hash password
+    const salt = bcrypt.genSaltSync(10);
+    const hashPassword = bcrypt.hashSync(password, salt);
+
+    // Create new user payload
+    const payload = {
+      ...req.body,
         role:"GENERAL",
         password : hashPassword
-    }
-    const userData = new userModel(payload)
-    const saveUser= await userData.save()
-    res.status(201).json({
-        Data:saveUser,
-        success:true,
-        error:false,
-        message:"User created successfully..."
-    })
+    };
 
+    // Save new user
+    const newUser = new userModel(payload);
+    const savedUser = await newUser.save();
+
+    // Generate token
+    const tokenData = { _id: savedUser._id, email: savedUser.email };
+    const token = jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, {
+      expiresIn: "8h", // Token expires in 8 hours
+    });
+
+    // Configure cookie options
+    const isProduction = process.env.NODE_ENV === "production";
+    const tokenOptions = {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
+    };
+
+    // Set cookie and send response
+    res.cookie("token", token, tokenOptions).status(200).json({
+      success: true,
+      message: "User created successfully!",
+      data: {
+        token,
+        user: {
+          _id: savedUser._id,
+          name: savedUser.userName,
+          email: savedUser.email,
+          role: savedUser.role,
+        },
+      },
+    });
   } catch (error) {
-     return res.status(500).json({
-      message: error.message ||error,
-      error: true,
+    console.error("Error during signup:", error);
+    res.status(500).json({
       success: false,
+      message: error.message || "Internal server error.",
     });
   }
 }
-module.exports= signUpController
+
+module.exports = signUpController;

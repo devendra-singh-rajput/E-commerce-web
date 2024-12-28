@@ -55,7 +55,7 @@ const ChangeRole = ({
             }
         </select>
         </div>
-        <button className='w-fit mx-auto block h-9  py-1 px-3 rounded-full bg-primary text-white  hover:bg-secondary'onClick={updateUserRole}>Change Role</button>
+        <button className='w-fit mx-auto block h-9   font-semibold py-1 px-3 rounded-full text-primary border border-b-2 border-primary  hover:text-white  hover:bg-primary'onClick={updateUserRole}>Change Role</button>
      </div>
     </div>
   )

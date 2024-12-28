@@ -2,7 +2,7 @@ const userModel = require("../../models/UserModel");
 
 async function AllUser(req,res){
     try {
-        const users= await userModel.find()            
+        const users= await userModel.find().sort({ createdAt: -1 });            
         res.status(200).json({
             data:users,
             error:false,

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import summmryApi from '../common';
+import { FaSpinner } from 'react-icons/fa';
 
 const OrderHistory = () => {
     const [orders, setOrders] = useState([]);
@@ -27,7 +28,13 @@ const OrderHistory = () => {
         }
     }, [userId]);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading)
+        return (
+          <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <FaSpinner className="animate-spin text-4xl text-primary" />
+            <p className="ml-3 text-xl text-primary font-medium">Loading orders...</p>
+          </div>
+        );
     if (error) return <p>{error}</p>;
 
     return (

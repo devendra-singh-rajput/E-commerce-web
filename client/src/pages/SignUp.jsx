@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import signin from '../assest/signin.gif';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
-import imageToBase64 from '../helpers/imgToBase64';
 import { toast } from 'react-toastify';
 import summmryApi from '../common/index';
+import uploadImages from '../helpers/uploadImage';
+import Context from '../context';
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false); // Loading state
+    const [imgLoading, setImgLoading] = useState(false);
     const [data, setData] = useState({
         userName: "",
         email: "",
@@ -17,9 +19,8 @@ const SignUp = () => {
         confirmPassword: "",
         profilePic: ""
     });
-    
     const navigate = useNavigate();
-
+    const { fetchUserDetail,userAddToCart } = useContext(Context);
     const handleOnChange = (e) => {
         const { name, value } = e.target;
         setData((prev) => ({
@@ -27,17 +28,26 @@ const SignUp = () => {
             [name]: value
         }));
     };
-
+    
     const handleUploadPic = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const profilePic = await imageToBase64(file);
-            setData((prev) => ({
-                ...prev,
-                profilePic
-            }));
+        const file = [e.target.files[0]]; // Wrap the file in an array
+        if (file[0]) { // Check if the file exists
+            setImgLoading(true);
+            try {
+                const profilePicArray= await uploadImages(file); // Upload the image
+                const profilePic =profilePicArray[0].url;                
+                setData((prev) => ({
+                    ...prev,
+                    profilePic
+                }));
+                profilePic&&setImgLoading(false);
+            } catch (error) {
+                console.error("Error uploading the image:", error);
+                toast.error("Failed to upload image. Please try again.");
+            }
         }
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -54,6 +64,7 @@ const SignUp = () => {
             try {
                 const response = await fetch(summmryApi.signUp.url, {
                     method: summmryApi.signUp.method,
+                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -64,7 +75,9 @@ const SignUp = () => {
                 
                 if (dataApi.success) {
                     toast.success(dataApi.message);
-                    navigate("/login");
+                    navigate("/");
+                    fetchUserDetail();
+                    userAddToCart();
                 } else {
                     toast.error(dataApi.message);
                 }
@@ -87,7 +100,7 @@ const SignUp = () => {
                     <div className='w-20 h-20 mx-auto relative overflow-hidden rounded-full'>
                         <img src={data.profilePic || signin} alt="Profile" />
                         <label>
-                            <div className='text-xs bg-slate-200 bg-opacity-80 pb-5 cursor-pointer absolute bottom-0 w-full'>
+                            <div className='text-xs bg-slate-200 bg-opacity-50 pb-5 cursor-pointer absolute bottom-0 w-full'>
                                 Upload Photo
                             </div>
                             <input type="file" className='hidden' onChange={handleUploadPic} />
@@ -141,7 +154,7 @@ const SignUp = () => {
                             </div>
                         </div>
                         <button className={`bg-primary hover:bg-secondary text-white w-full max-w-[200px] rounded-full hover:scale-105 transition-all mx-auto block px-6 py-2 mt-6 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={loading}>
-                            {loading ? "Signing Up..." : "Sign Up"}
+                            {loading ? "Signing Up..." :(imgLoading ? "image uploading..." : "Sign Up")}
                         </button>
                     </form>
                     <p className='my-2'>Already have an account? <Link to={'/login'} className='hover:underline text-primary'>Login</Link></p>
