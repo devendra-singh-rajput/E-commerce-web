@@ -30,10 +30,10 @@ const AdminPenal = () => {
               <FaRegUserCircle />
             )}
           </Link>
-          <div>
+          <Link to="/EditProfile">
             <p className='capitalize text-sm font-semibold'>{user?.userName}</p>
             <p className='text-xs'>{user?.role}</p>
-          </div>
+          </Link>
         </div>
         <div className='flex flex-wrap '>
           <Link to={'Dashboard'} className='px-3 py-2 text-sm hover:bg-gray-200 font-semibold  rounded'>Dashboard</Link>
