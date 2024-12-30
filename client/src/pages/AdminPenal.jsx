@@ -19,7 +19,7 @@ const AdminPenal = () => {
       {/* Top Navigation for Mobile */}
       <nav className='bg-white shadow-md lg:hidden flex flex-wrap items-center justify-between p-2'>
         <div className='flex items-center space-x-4 m-2'>
-          <div className='text-3xl cursor-pointer'>
+          <Link to="/EditProfile" className='text-3xl cursor-pointer'>
             {user?.profilePic ? (
               <img
                 src={user?.profilePic}
@@ -29,7 +29,7 @@ const AdminPenal = () => {
             ) : (
               <FaRegUserCircle />
             )}
-          </div>
+          </Link>
           <div>
             <p className='capitalize text-sm font-semibold'>{user?.userName}</p>
             <p className='text-xs'>{user?.role}</p>
@@ -48,7 +48,7 @@ const AdminPenal = () => {
       <div className='lg:flex hidden flex-row'>
         <aside className='bg-white min-h-full w-full max-w-60 shadow-right-custom mr-2'>
           <div className='h-36 bg-slate-200 flex-col flex justify-center items-center shadow-md'>
-            <div className='text-5xl cursor-pointer relative flex justify-center items-center h-32'>
+            <Link to="/EditProfile" className='text-5xl cursor-pointer relative flex justify-center items-center h-32'>
               {user?.profilePic ? (
                 <img
                   src={user?.profilePic}
@@ -58,7 +58,7 @@ const AdminPenal = () => {
               ) : (
                 <FaRegUserCircle />
               )}
-            </div>
+            </Link>
             <p className='capitalize text-lg font-semibold'>{user?.userName}</p>
             <p className='text-sm'>{user?.role}</p>
           </div>

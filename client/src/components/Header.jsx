@@ -106,17 +106,21 @@ const Header = () => {
         }
 
         <div className='flex items-center gap-4 md:gap-7'>
-          {user?._id && (
-            <Link to={'/admin-panel/Dashboard'} className='text-3xl cursor-pointer'>
-              {user?.profilePic ? (
-                <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user?.name} />
-              ) : (<Link to={'/EditProfile'}>
-              
-              <FaRegUserCircle />
+          {
+            user?._id&&(user?.role==='ADMIN'?(
+              <Link to={'/admin-panel/Dashboard'} className='text-3xl cursor-pointer'>
+                 {user?.profilePic ? (
+                  <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user?.name} />
+                ) : (<FaRegUserCircle />           
+                )}
               </Link>
-              )}
-            </Link>
-          )}
+            ):(<Link to={'/EditProfile'}>
+               {user?.profilePic ? (
+                  <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user?.name} />
+                ) : (<FaRegUserCircle className="text-3xl" />           
+                )}
+            </Link>))
+          }
 
           {user?._id && (
             <Link to={'/cart'} className='text-3xl relative'>

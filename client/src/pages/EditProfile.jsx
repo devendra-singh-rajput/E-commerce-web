@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -6,8 +6,10 @@ import axios from "axios";
 import signinGif from '../assest/signin.gif'
 import uploadImages from '../helpers/uploadImage';
 import summmryApi from "../common";
+import Context from "../context";
 
 const EditProfile = () => {
+  const context = useContext(Context);
   const user = useSelector((state) => state?.user?.user); // Get user from Redux state
   const [data, setData] = useState({ ...user });
   const [imgLoading, setImgLoading] = useState(false);
@@ -56,6 +58,7 @@ const EditProfile = () => {
     try {
       await axios.put(summmryApi.EditProfile.url,data,{  withCredentials: true}); // Adjust API endpoint as needed
       toast.success("Profile updated successfully!");
+      context.fetchUserDetail();
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Error updating profile.");
@@ -115,7 +118,7 @@ const EditProfile = () => {
             >
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Username
+                  User Name
                 </label>
                 <input
                   type="text"
@@ -212,7 +215,7 @@ const EditProfile = () => {
               <div className="col-span-1 md:col-span-2">
                 <button
                   type="submit"
-                  className={`w-full py-3 px-4 rounded-lg text-white font-semibold text-lg transition-transform transform hover:scale-105 ${
+                  className={`w-full py-2 px-3 rounded-lg text-white font-semibold text-lg transition-transform transform hover:scale-105 ${
                     loading
                       ? "bg-gray-400 cursor-not-allowed"
                       : "border-2 bg-white border-primary text-black font-semibold  hover:bg-primary hover:text-white"
