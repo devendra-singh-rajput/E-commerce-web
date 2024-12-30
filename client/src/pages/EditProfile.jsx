@@ -215,10 +215,10 @@ const EditProfile = () => {
               <div className="col-span-1 md:col-span-2">
                 <button
                   type="submit"
-                  className={`w-full py-2 px-3 rounded-lg text-white font-semibold text-lg transition-transform transform hover:scale-105 ${
+                  className={`w-full py-2 px-3 rounded-lg text-primary font-semibold text-lg transition-transform transform hover:scale-105 ${
                     loading
                       ? "bg-gray-400 cursor-not-allowed"
-                      : "border-2 bg-white border-primary text-black font-semibold  hover:bg-primary hover:text-white"
+                      : "border-2 bg-white border-primary font-semibold  hover:bg-primary hover:text-white"
                   }`}
                   disabled={loading||imgLoading}
                 >
