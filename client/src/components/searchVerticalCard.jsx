@@ -64,10 +64,10 @@ const SearchVerticalCard = ({ loading, data = [] }) => {
 
               <div className="p-4 flex gap-2">
                 <div className="gap-3">
-                  <h2 className="text-base min-w-32 md:text-lg text-ellipsis line-clamp-1 font-semibold">{product.productName}</h2>
+                  <h2 className="text-base min-w-2 md:text-lg text-ellipsis line-clamp-1 font-semibold">{product.productName}</h2>
                   <div className="flex gap-4">
                     <p className="capitalize font-semibold">{product.brandName}</p>
-                    <p className="text-slate-900 capitalize text-ellipsis line-clamp-1">{product.category}</p>
+                    <p className="text-slate-900 text-xs mt-1 capitalize text-ellipsis line-clamp-1">{product.category}</p>
                   </div>
                   <p className="text-md line-through text-gray-500">{INRcurrency(product.price)}</p>
                   <p className="text-xl font-semibold pb-2">{INRcurrency(product.sellingPrice)}</p>
@@ -80,7 +80,7 @@ const SearchVerticalCard = ({ loading, data = [] }) => {
                 </div>
                 <div className="border-l border-gray-300 h-36 hidden md:block" />
                 <div>
-                  <p className="text-ellipsis line-clamp-6 h-36 hidden md:block overflow-y-scroll scrollbar-none overflow-x-hidden">
+                  <p className="text-ellipsis line-clamp-6 w-32 h-36 hidden md:block overflow-y-scroll scrollbar-none overflow-x-hidden">
                     {product.description}
                   </p>
                 </div>
