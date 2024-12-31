@@ -83,7 +83,18 @@ const CategoryManager = ({ categories, setCategories }) => {
   };
 
   const removeCategory = (index) => {
-    setCategories((prev) => prev.filter((_, i) => i !== index));
+    // Show confirmation dialog box
+    const isConfirmed = window.confirm(
+      "Are you sure you want to remove this category? This will also remove all products under this category."
+    );
+    
+    // If "OK" is clicked, delete the category
+    if (isConfirmed) {
+      setCategories((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      // If "Cancel" is clicked, do nothing
+      console.log("Category removal cancelled.");
+    }
   };
 
   return (
@@ -110,6 +121,7 @@ const CategoryManager = ({ categories, setCategories }) => {
             <li key={index} className="relative text-sm bg-gray-100 px-3 pr-7 border py-1 rounded shadow-md">
               {category}
               <button
+              
                 onClick={() => removeCategory(index)}
                 className="absolute top-1 right-2 font-semibold text-red-500"
               >
@@ -157,15 +169,20 @@ const CustomizationPage = () => {
   };
 
   const handleRemoveLogo = async () => {
-    setLogo("");
-    setIsDeletingLogo(true);
+    const isConfirmed= window.confirm('Are you sure you want to remove')
     try {
+    if (isConfirmed) {
+      setLogo("");
+    setIsDeletingLogo(true);
+    
       await axios.post(
         summmryApi.updateCustomization.url,
         { logo: null },
         { withCredentials: true }
       );
-    } catch (error) {
+    }
+    }
+    catch (error) {
       console.error("Failed to delete logo:", error);
       alert("Failed to delete logo. Please try again.");
     } finally {
