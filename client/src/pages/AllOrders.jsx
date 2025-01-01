@@ -2,11 +2,38 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSpinner } from "react-icons/fa";
 import summmryApi from "../common";
+import CancelOrderPopup from "../components/CancelOrderPopup";
 
 const AllOrders = () => {
   const [parentOrders, setParentOrders] = useState([]); // Holds the parent order data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const[cencelOrder,setCencelOrder]=useState('')
+  const[perentCencelOrder,setPerentCencelOrder]=useState('')
+
+  const handleCancelClick = (parentOrder,order) => {
+     // Set the selected order
+     setPerentCencelOrder(parentOrder)
+     setCencelOrder(order)
+    setIsPopupOpen(true); // Open the popup
+  };
+
+  const handlePopupClose = () =>  setIsPopupOpen(false);
+
+  const handlePopupSubmit = (parentOrder,orderId, reason) => {
+    // Update the order status with the reason
+    updateOrder(parentOrder,orderId, {
+      status: "Cancelled",
+      expectedDelivery: reason,
+    });
+
+    setIsPopupOpen(false); // Close the popup after submission
+    setPerentCencelOrder('')
+    setCencelOrder('')
+     // Clear selected order
+  };
 
   // Fetch all parent orders with nested orders
   const fetchAllOrders = async () => {
@@ -204,7 +231,7 @@ const AllOrders = () => {
                           status: order.status === "Shipped" ? "Delivered" : "Shipped",
                         })
                       }
-                      disabled={order.status === "Delivered"}
+                      disabled={order.status === "Delivered"|| "Cancelled"}
                       className={`${order.status === "Shipped" || order.status === "Delivered" ? "bg-green-600" : "bg-blue-600"
                         } text-white px-3 py-1 rounded hover:opacity-90 ${order.status === "Delivered" ? "opacity-50 cursor-not-allowed" : ""
                         }`}
@@ -214,17 +241,24 @@ const AllOrders = () => {
 
                     <button
                       onClick={() =>
-                        updateOrder(parentOrder._id, order._id, {
-                          status: "Cancelled",
-                          expectedDelivery: "Your order has been canceled.",
-                        })
+                        handleCancelClick(parentOrder._id, order._id)
                       }
-                      disabled={order.status === "Delivered"}
+                      disabled={order.status === "Delivered"||"Cancelled"}
                       className={`px-3 py-1 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded ${order.status === "Delivered" ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                     >
                       Cancel Order
                     </button>
+                      {/* Popup Integration */}
+      {cencelOrder && (
+        <CancelOrderPopup
+          isOpen={isPopupOpen}
+          onClose={handlePopupClose}
+          onSubmit={handlePopupSubmit}
+          orderId={cencelOrder}
+          parentOrder={perentCencelOrder}
+        />
+      )}
 
                   </div>
                 </div>
