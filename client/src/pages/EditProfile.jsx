@@ -101,7 +101,7 @@ const EditProfile = () => {
                 </span>
               </div>
               <button
-                onClick={() => navigate("/order-history")}
+                onClick={() => navigate("/OrderHistoryPage")}
                 className="bg-gradient-to-r from-primary to-yellow-600 hover:from-yellow-600 hover:to-primary text-white py-2 px-6 rounded-lg shadow-md font-medium transition-transform transform hover:scale-105"
               >
                 View Order History

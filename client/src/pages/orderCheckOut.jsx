@@ -32,7 +32,6 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get state
   const { data } = location.state || { data: [] };
-  console.log(data);
   const [products, setProducts] = useState(
     data.map(({ productId, quantity }) => ({
       productId: productId._id,
@@ -227,6 +226,9 @@ const CheckoutPage = () => {
         toast.success(result.message)
         setLoading(false)
         navigate('/');
+          if(data.length > 1) {
+        // Clear cart items
+        deleteAllCartItems()}
       }else{
         toast.error(result.message)
       }
