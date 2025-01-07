@@ -74,6 +74,10 @@ const summmryApi={
         url:`${backendDomin}/api/deleteCartProduct`,
         method:"delete"
     },
+    deleteAllCartItems:{
+        url:`${backendDomin}/api/deleteAllCartItems`,
+        method:"delete"
+    },
     search:{
         url:`${backendDomin}/api/search`,
         method:"get"

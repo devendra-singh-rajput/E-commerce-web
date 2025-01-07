@@ -1,19 +1,16 @@
 const Order = require('../../models/orderModel');
-const productModel = require('../../models/ProductModel');
 const userModel = require('../../models/UserModel');
 
 const placeOrder = async (req, res) => {
-  const { productId, quantity, productImage,productName,shippingCharge,paymentStatus, tax, price, totalAmount, userData, otp, paymentMethod } = req.body;
+  const {  products,
+    shippingCharge,
+    totalAmount,
+    userData,
+    paymentStatus,
+    paymentMethod } = req.body;
   const userId = req.userId;
 
   try {
-    // Validate OTP here if needed
-
-    // Check if product exists
-    const product = await productModel.findById(productId);
-    if (!product) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
-    }
 
     // Check if user exists
     const user = await userModel.findById(userId);
@@ -23,15 +20,7 @@ const placeOrder = async (req, res) => {
 
     // Create a new order entry for the user's orders array
     const newOrder = {
-      products: [
-        {
-          productId: productId,
-          quantity: quantity,
-          price: price,
-          productName:productName,
-          productImage:productImage,
-        }
-      ],
+      products: products,
       totalAmount: totalAmount,
       deliveryOption: paymentMethod,
       userDetail: userData,

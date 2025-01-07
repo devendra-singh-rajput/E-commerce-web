@@ -3,7 +3,7 @@ import summaryApi from '../common';
 import Context from '../context';
 import INRcurrency from '../helpers/displayCurrency';
 import { MdDeleteForever } from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const [data, setData] = useState([]);
@@ -11,6 +11,13 @@ const Cart = () => {
   const [error, setError] = useState(null);
   const context = useContext(Context);
   const loadingCart = new Array(context.countProductCart).fill(null);
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    navigate('/CheckoutPage', {
+      state: { data }, // Pass data via state
+    });
+  };
 
   // Fetch cart data
   const fetchData = async () => {
@@ -115,7 +122,7 @@ const handelLoading = async () => {
     <div className='container mx-auto'>
       <div className='text-center text-lg my-3 font-semibold'>
         {error && <p className='text-red-500'>{error}</p>}
-        {!loading && data.length === 0 && <p className='bg-white py-5'>NO DATA</p>}
+        {!loading && data.length === 0 && <p className='bg-white py-5'>LOADING...!</p>}
       </div>
 
       <div className='flex flex-col lg:flex-row gap-10 lg:justify-between p-4'>
@@ -211,7 +218,7 @@ const handelLoading = async () => {
                 </p>
               </div>
               <div className='flex justify-evenly my-3'>
-                {/* <button className='border-2 border-primary hover:bg-primary px-2 hover:text-white text-primary font-semibold rounded'>Payment</button> */}
+                <button className='border-2 border-primary hover:bg-primary px-2 hover:text-white text-primary font-semibold rounded' onClick={handleCheckout}>Payment</button>
                 
               <Link to={"/OrderHistoryPage"} className='border-2 border-primary font-semibold hover:bg-primary px-2 hover:text-white text-primary rounded'>Order History</Link>
               </div>

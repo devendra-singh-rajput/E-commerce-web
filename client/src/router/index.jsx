@@ -61,7 +61,7 @@ const router = createBrowserRouter(
           element: <OrderHistoryPage />,
         },
         {
-          path: "CheckoutPage/:productId",
+          path: "CheckoutPage",
           element: <CheckoutPage />,
         },
         {

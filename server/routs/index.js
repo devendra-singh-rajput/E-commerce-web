@@ -33,6 +33,7 @@ const { getDashboardData } = require('../controllers/user/getDashboardData')
 const { verifyOtp, resetPassword, sendOtp } = require('../controllers/user/ForgotPassword')
 const { createOrder, verifyPayment } = require('../controllers/order/orderPayment')
 const EditProfile = require('../controllers/user/EditProfile')
+const { deleteAllCartItems } = require('../controllers/user/deleteAllCartProducts')
 
 //user
 router.post("/signup",signUpController)
@@ -67,6 +68,7 @@ router.get('/countProductCart',authToken,countProductsInCart)
 router.get('/cartView',authToken,cartView)
 router.post('/updateCart',authToken,updateCart)
 router.delete('/deleteCartProduct',authToken,deleteCartProduct)
+router.delete('/deleteAllCartItems',authToken,deleteAllCartItems)
 
 // products order
 router.post("/sendSMS",authToken,sendSMS)

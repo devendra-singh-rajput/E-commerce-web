@@ -231,7 +231,7 @@ const AllOrders = () => {
                           status: order.status === "Shipped" ? "Delivered" : "Shipped",
                         })
                       }
-                      disabled={order.status === "Delivered"|| "Cancelled"}
+                      disabled={order.status === "Delivered" ||order.status ==="Cancelled"}
                       className={`${order.status === "Shipped" || order.status === "Delivered" ? "bg-green-600" : "bg-blue-600"
                         } text-white px-3 py-1 rounded hover:opacity-90 ${order.status === "Delivered" ? "opacity-50 cursor-not-allowed" : ""
                         }`}
@@ -243,7 +243,7 @@ const AllOrders = () => {
                       onClick={() =>
                         handleCancelClick(parentOrder._id, order._id)
                       }
-                      disabled={order.status === "Delivered"||"Cancelled"}
+                      disabled={order.status === "Delivered" ||order.status === "Cancelled"}
                       className={`px-3 py-1 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded ${order.status === "Delivered" ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                     >

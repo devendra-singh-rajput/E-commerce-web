@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import summmryApi from '../common';
 import { IoIosStarHalf } from "react-icons/io";
 import { IoIosStar } from "react-icons/io";
@@ -33,6 +33,7 @@ const ProductDetail = () => {
   const [zoomImages,setZoomImages]=useState(false)
   const { userAddToCart } = useContext(Context);
   const user = useSelector(state => state?.user?.user)
+  const navigate= useNavigate()
   
   const handleAddToCart = (e, _id) => {
     e.stopPropagation();
@@ -45,6 +46,23 @@ const ProductDetail = () => {
       e.preventDefault();
       toast.warn('Please login first...!');
     }
+    const arrayData = [data];
+    const transformedProducts = arrayData.map((product) => ({
+      productId: {
+        _id: product._id,
+        productName: product.productName,
+        brandName: product.brandName,
+        category: product.category,
+        productImage: product.productImage,
+        price: product.price,
+        sellingPrice: product.sellingPrice,
+      },
+      quantity: 1, // Default quantity
+      _id: undefined, // Set to undefined or remove if not needed
+    })); // Wrap `data` into an array
+    navigate('/CheckoutPage', {
+      state: { data : transformedProducts }, // Pass the arrayData via state
+    });
   };
 
 
@@ -204,7 +222,7 @@ const leaveZoomImage=()=>{
                 <p className='text-slate-500 line-through text-lg'>{INRcurrency(data.price)}</p>
               </div>
               <div className='flex items-start gap-5 my-2'>
-                <Link to={`/CheckoutPage/${data?._id}`} className='border-2 border-primary py-1 justify-center flex items-center gap-1 text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium min-w-[120px]'onClick={handleCheckout}><BsBagHeartFill className='text-lg' />BUY</Link>
+                <div className='border-2 border-primary py-1 justify-center flex items-center gap-1 text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium min-w-[120px]'onClick={handleCheckout}><BsBagHeartFill className='text-lg' />BUY</div>
                 <button className='border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded px-2 font-medium flex items-center gap-1  py-1 min-w-[130px]'onClick={(e)=>handleAddToCart(e,data?._id)} > <FaCartArrowDown className='text-lg'
                   />ADD TO CART</button>
               </div>

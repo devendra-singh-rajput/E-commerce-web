@@ -8,7 +8,8 @@ const ordersSchema = new Schema({
       quantity: { type: Number, required: true },
       price: { type: Number, required: true },
       productImage:{ type: String, },
-      productName:{ type: String,}
+      productName:{ type: String,},
+      brandName: { type: String,},
     },
   ],
   totalAmount: { type: Number, required: true },
